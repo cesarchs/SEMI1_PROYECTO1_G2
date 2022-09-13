@@ -1,4 +1,4 @@
-import conexion from '../db/dababase.js'
+//import conexion from '../db/dababase.js'
 // cargar el modulo de express
 import express from 'express'
 // y crea una instancia de la aplicación express
@@ -13,6 +13,21 @@ import sha256 from 'js-sha256';
 // recibir datos en formato json
 appTerciario.use(bodyParser.json());
 
+
+// PARA AWS ///////////////////////////////////////////////////////////////////////////////////////////////////////
+//var AWS = require('aws-sdk');
+//const aws_keys = require('./creds_template'); // <-- se agrega la clase en donde estan las credenciales 
+
+//const s3 = new AWS.S3(aws_keys.s3);  //--------> Alamacenamiento S3
+//const ddb = new AWS.DynamoDB(aws_keys.dynamodb); //------> Base de datos - Dynamo 
+//const rek = new AWS.Rekognition(aws_keys.rekognition); //----> Inteligencia Artificial 
+
+
+const db_credentials = require('../db/dababase'); //<-- Se importa las credenciales de la base de datos 
+var conn = mysql.createPool(db_credentials); // <- Se crea un pool para realizar la conexion a la base de datos 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 appTerciario.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

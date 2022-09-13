@@ -1,12 +1,12 @@
 import conexion from '../db/dababase.js'
-// cargar el modulo de express
 import express from 'express'
-// y crea una instancia de la aplicación express
 const appHotel = express()
-// cargar body parser para leer el body de los request
 import bodyParser from 'body-parser'
-// recibir datos en formato json
 appHotel.use(bodyParser.json());
+
+//import db_credentials from '../db/db_creds.js'
+// const db_credentials = require('./db_creds'); //<-- Se importa las credenciales de la base de datos 
+//var conn = mysql.createPool(db_credentials); // <- Se crea un pool para realizar la conexion a la base de datos 
 
 
 appHotel.use(function(req, res, next) {
@@ -15,29 +15,30 @@ appHotel.use(function(req, res, next) {
    next();
   });
 
-//Agregar auto para renta
-appHotel.post('/agregar-habitacion', (request,response) =>{
-    var hotel   = request.body.idServicio  ;
-    var fechaH   = request.body.fecha  ;
-    var cantidad   = request.body.habitaciones  ;
-    var precio   = request.body.precio  ;
-    var miQuery = "CALL addHabitacion (" 
-    + hotel + ","+
-    "\'"+fechaH+"\'"+
-    ","+cantidad+
-    ","+precio+
-    ");"
-    console.log(miQuery);
+//Peticion de prueba
+appHotel.get("/getdata", async (req, res) => {
+    conexion.query(`select * from AMIGO;`, function (err, result) {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+appHotel.get('/', function (req, res ) {
+	res.json({messaje: 'Hola Seminario'})
+});
+
+
+appHotel.get('/prueba',(request, response)=>{
+    //var idservicio = request.body.idservicio;
+    var miQuery = "select * from AMIGO;";
     conexion.query(miQuery, function(err, result){
         if(err){
-            response.status(502).send;
             console.log(err);
+            response.status(502).send;
         }else{
-            console.log(result[0][0]);
-            response.status(200).send(result[0][0]);
+            console.log(result[0]);
+            response.status(200).send(result[0]);
         }
-    });
+    }); 
 })
-
 
 export default appHotel
