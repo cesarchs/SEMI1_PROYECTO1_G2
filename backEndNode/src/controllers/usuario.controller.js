@@ -1,4 +1,8 @@
-import conexion from '../db/dababase.js'
+//import conexion from '../db/dababase.js'
+import db_credentials from '../db/db_creds.js'
+import mysql from 'mysql'
+var conn = mysql.createPool(db_credentials);
+
 import express from 'express'
 const appHotel = express()
 import bodyParser from 'body-parser'
@@ -17,7 +21,7 @@ appHotel.use(function(req, res, next) {
 
 //Peticion de prueba
 appHotel.get("/getdata", async (req, res) => {
-    conexion.query(`select * from AMIGO;`, function (err, result) {
+    conn.query(`select * from AMIGO;`, function (err, result) {
         if (err) throw err;
         res.send(result);
     });
@@ -30,7 +34,7 @@ appHotel.get('/', function (req, res ) {
 appHotel.get('/prueba',(request, response)=>{
     //var idservicio = request.body.idservicio;
     var miQuery = "select * from AMIGO;";
-    conexion.query(miQuery, function(err, result){
+    conn.query(miQuery, function(err, result){
         if(err){
             console.log(err);
             response.status(502).send;
