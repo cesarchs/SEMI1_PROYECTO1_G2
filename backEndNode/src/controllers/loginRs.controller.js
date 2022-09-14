@@ -4,39 +4,35 @@ import mysql from 'mysql' // IMPORTAMOS MYSQL
 var conn = mysql.createPool(db_credentials); // CREAMOS UN POOL PARA LAS PETICIONES A LA BASE DE DATOS 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 import express from 'express'
-const appUsuario = express() // creamos instancia de express para exportar al .router
+const appLogin = express() // creamos instancia de express para exportar al .router
 import bodyParser from 'body-parser'
-appUsuario.use(bodyParser.json());
+appLogin.use(bodyParser.json());
 
 
-appUsuario.use(function(req, res, next) {
+appLogin.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
    next();
   });
 
-appUsuario.get('/holaUsuario', function (req, res ) {
-	res.json({messaje: 'Hola desde controlador usuario'})
+appLogin.get('/holaLogin', function (req, res ) {
+	res.json({messaje: 'Hola desde el controlador del log in'})
 });
 
-// REGISTRAR USUARIO
-appUsuario.post('/register',(request, response)=>{
-    var user = request.body.user;
-    var fullname = request.body.fullname;
-    var email = request.body.email;
-    var pwd = request.body.pwd;
-    var photo = request.body.photo;
-   
 
-    var miQuery = "insert into USUARIO (user,fullname, email,pwd,photo) VALUES ( " +
-    "\'"+user+"\' ,"+
-    "\'"+fullname+"\' ,"+
-    "\'"+email+"\' ,"+
-    'aes_encrypt(' + '\'1\',' + "\'"+pwd+"\'), " +
-    "\'"+photo+"\' );"
+
+// peticion para log in 
+appLogin.post('/login',(request, response)=>{
+    var user = request.body.user;
+    var pwd = request.body.pwd;
+
+    var miQuery = "SELECT * FROM USUARIO " +
+    'WHERE ( user = ' + "\'"+user+"\' "+ 
+    'AND pwd = aes_encrypt( ' + '\'1\',' + "\'"+pwd+"\' ) ) " +
+    'OR ( email = ' + "\'"+user+"\' "+ 
+    'AND pwd = aes_encrypt( ' + '\'1\',' + "\'"+pwd+"\' ) )" 
     ;
     console.log(miQuery);
-
     conn.query(miQuery, function(err, result){
         if(err){
             console.log(err);
@@ -48,7 +44,6 @@ appUsuario.post('/register',(request, response)=>{
     }); 
 })
 
-// ARCHIVOS DE USUARIO
 
 
-export default appUsuario
+export default appLogin
