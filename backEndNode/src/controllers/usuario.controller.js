@@ -8,6 +8,8 @@ const appUsuario = express() // creamos instancia de express para exportar al .r
 import bodyParser from 'body-parser'
 appUsuario.use(bodyParser.json());
 
+import sha256 from 'js-sha256' // libreria para emcriptar 
+
 
 appUsuario.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -26,24 +28,25 @@ appUsuario.post('/register',(request, response)=>{
     var email = request.body.email;
     var pwd = request.body.pwd;
     var photo = request.body.photo;
-   
+
+    var hash = sha256(pwd);
 
     var miQuery = "insert into USUARIO (user,fullname, email,pwd,photo) VALUES ( " +
     "\'"+user+"\' ,"+
     "\'"+fullname+"\' ,"+
     "\'"+email+"\' ,"+
-    'aes_encrypt(' + '\'1\',' + "\'"+pwd+"\'), " +
+    "\'"+hash+"\', " +
     "\'"+photo+"\' );"
     ;
     console.log(miQuery);
 
     conn.query(miQuery, function(err, result){
         if(err){
-            console.log(err);
-            response.status(502).send;
+            console.log(err || result[0] == undefined);
+            response.status(502).send('Status: false');
         }else{
             console.log(result[0]);
-            response.status(200).send(result[0]);
+            response.status(200).send('Status: true');
         }
     }); 
 })
