@@ -6,10 +6,10 @@ import appLogin from '../controllers/loginRs.controller.js'
 const Router = express();
 
 //Routers 
-Router.get('/getdata',appUsuario)
-Router.get('/',appUsuario)
 Router.get('/holaLogin',appLogin)
 Router.post('/login',appLogin)
+Router.get('/holaUsuario',appUsuario)
+Router.post('/register',appUsuario)
 
 
 export default Router
