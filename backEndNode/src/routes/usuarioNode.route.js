@@ -10,6 +10,7 @@ Router.get('/holaLogin',appLogin)
 Router.post('/login',appLogin)
 Router.get('/holaUsuario',appUsuario)
 Router.post('/register',appUsuario)
+Router.get('/userFiles/:idUser',appUsuario)
 
 
 export default Router
