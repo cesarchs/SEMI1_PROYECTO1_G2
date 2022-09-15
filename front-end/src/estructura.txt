@@ -1,0 +1,165 @@
+------------------------------------------------------
+/login [POST] : Loguear usuario
+Lo que se envía:
+{
+    "user":"",
+    "pwd":""
+}
+Lo que retorna:
+status:200{
+    "msg": true
+}
+status:502{
+    "msg": false
+}
+------------------------------------------------------
+/register [POST] : Registrar usuario
+//LO QUE SE ENVÍA:
+{
+    "user":"",
+    "name":"",
+    "email": ""
+    "pwd":"",
+    "photo":{FILE}:
+}
+//LO QUE RETORNA:
+status:200{
+    "msg": true
+}
+status:502{
+    "msg": false
+}
+------------------------------------------------------
+/user [GET] : Obtener datos de usuario
+//LO QUE RETORNA
+status(200){
+    "id_user":00
+//LO QUE RETORNA
+    "user":"",
+    "name":""
+}
+------------------------------------------------------
+/userFiles/:iduser [GET] : Obtener todos los archivos del usuario
+status(200){
+    [
+        {
+            "id_file": 00
+            "file_name":"nombrearchivo.pdf",
+            "owner":"propietario",
+            "date":"fecha_creación",
+            "private": true|false
+        },
+        {
+            "id_file": 01
+            "file_name":"nombrearchivo.pdf",
+            "owner":"propietario",
+            "date":"fecha_creación",
+            "private": true|false
+        }
+    ]
+}
+
+------------------------------------------------------
+/friendsFiles/:iduser [GET] : Obtener todos los archivos de los amigos del usuario
+status(200){
+    [
+        {
+            "id_file": 00
+            "file_name":"nombrearchivo.pdf",
+            "owner":"propietario",
+            "date":"fecha_creación",
+            "private": true|false
+        },
+        {
+            "id_file": 01
+            "file_name":"nombrearchivo.pdf",
+            "owner":"propietario",
+            "date":"fecha_creación",
+            "private": true|false
+        }
+    ]
+}
+------------------------------------------------------
+/uploadFile [POST] : Subir Archivo
+//LO QUE SE ENVÍA:
+{
+    "file_name":"",
+    "file":{FILE},
+    "private": true|false,
+    "pwd":"contraseña"
+}
+//LO QUE RETORNA:
+status:200{
+    "msg": true
+}
+status:502{
+    "msg": false
+}
+------------------------------------------------------
+/deleteFile [POST] : Eliminar Archivo
+//LO QUE SE ENVÍA:
+{
+    "id_file":00,
+    "file_name":"",
+    "pwd":"contraseña"
+}
+//LO QUE RETORNA:
+status:200{
+    "msg": true
+}
+status:502{
+    "msg": false
+}
+------------------------------------------------------
+/editFile [POST] : Editar Archivo
+//LO QUE SE ENVÍA:
+{
+    "id_file":00,
+    "file_name":"",
+    "private": true|false,
+    "pwd":"contraseña"
+}
+//LO QUE RETORNA:
+status:200{
+    "msg": true
+}
+status:502{
+    "msg": false
+}
+
+------------------------------------------------------
+/allUsers [GET] : Lista todos los usuarios
+//LO QUE RETORNA:
+status:200{
+    [
+        {
+            "id_user": 00,
+            "user": "",
+            "name": "",
+            "photo": "URL",
+            "public_files": 00, //CANTIDAD DE ARCHIVOS PÚBLICOS
+            "friend": true|false
+        },
+        {
+            "id_user": 00,
+            "user":"",
+            "name":"",
+            "public_files":00,
+            "friend":true|false
+        }
+    ]
+}
+------------------------------------------------------
+/addFriend [POST] : Agregar amigo
+//LO QUE SE ENVÍA:
+{
+    "id_user": 00,
+    "id_friend": 00,
+}
+//LO QUE RETORNA:
+status:200{
+    "msg": true
+}
+status:502{
+    "msg": false
+}
