@@ -106,5 +106,53 @@ appLogin.post('/deleteFile',(request, response)=>{
         }
     });     
 })
-/* DELETE FROM ARCHIVO WHERE idArchivo = 10 AND propietario = 10;  */
+
+
+
+// EDITAR ARCHIVO 
+
+appLogin.post('/editFile',(request, response)=>{
+    //RECOGER DATOS
+    var idUsuario = request.body.idUsuario;
+    var id_file = request.body.id_file;
+    var file_name = request.body.file_name;
+    var privado = request.body.private;
+    var pwd = request.body.pwd;
+
+    var hash = sha256(pwd);
+
+    var miQuery = "SELECT * FROM USUARIO " +
+    'WHERE ( idUsuario = ' + "\'"+idUsuario+"\' "+ 
+    'AND pwd = '+"\'"+hash+"\' ); " 
+    ;
+    console.log(miQuery);
+    conn.query(miQuery, function(err, result){
+        if(err || result[0] == undefined ){
+            console.log(err );
+            response.status(502).send('Status: bad pwd');
+        }else{
+            var miQuery2 = "UPDATE ARCHIVO SET file_name = " +
+            "\'"+file_name+"\' , "+ 
+            "private = "+ 
+            privado +
+            " , FechaModificacion = DATE_SUB(now(), INTERVAL 6 HOUR) "+
+            "WHERE idArchivo = "+ id_file +
+            " AND propietario = "+ idUsuario + " ;"
+            ;
+            console.log(miQuery2);
+            conn.query(miQuery2, function(err, result){
+                if(err){
+                    console.log(err);
+                    response.status(502).send('Status: false');
+                }else{
+                    console.log(result[0]);
+                    response.status(200).send('Status: true');
+                }
+            });
+        }
+    });     
+})
+
+
+
 export default appLogin
