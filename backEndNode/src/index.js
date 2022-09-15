@@ -8,7 +8,7 @@ const app = express();
 app.use(cors())
 
 //Routes
-app.use('/apiTerciario',Router);
+app.use('/apiUsuarioN',Router);
 
 //incio app
 app.listen(PORT,() => { 
