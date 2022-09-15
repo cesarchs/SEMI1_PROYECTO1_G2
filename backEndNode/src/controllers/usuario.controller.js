@@ -51,7 +51,7 @@ appUsuario.post('/register',(request, response)=>{
     }); 
 })
 
-// ARCHIVOS DE USUARIO
+// ARCHIVOS DE MI USUARIO
 appUsuario.get('/userFiles/:idUser',(request, response)=>{
     var idUser = request.params.idUser;
     var miQuery = "SELECT idArchivo, file_name, private, URL, date_format(FechaCreacion, '%d/%m/%Y') as FechaCreada , date_format(FechaModificacion, '%d/%m/%Y') as FechaModificacion " +
@@ -68,24 +68,61 @@ appUsuario.get('/userFiles/:idUser',(request, response)=>{
         }
     }); 
 })
-/* // CONSULTA
-SELECT idArchivo, file_name, private, URL, date_format(FechaCreacion, '%d/%m/%Y') as FechaCreada , date_format(FechaModificacion, '%d/%m/%Y') as FechaModificacion
-FROM ARCHIVO WHERE propietario = '6' ORDER BY private ASC;
-*/
 
-/*
-appHotel.get('/getResenaHotel/:id',(request, response)=>{
-    var idservicio = request.params.id;
-    var miQuery = "prcedure getResena ("+idservicio+");";
-    conexion.query(miQuery, function(err, result){
-        if(err){
+// ARCHIVOS PUBLICOS DE USUARIOS AMIGO
+
+appUsuario.get('/friendFiles/:idUser',(request, response)=>{
+    var idUser = request.params.idUser;
+    var miQuery = "SELECT aux.idArchivo, aux.file_name, aux.user, date_format(aux.FechaModificacion, '%d/%m/%Y') AS FechaModificacion " +
+    "FROM ( "+
+        "SELECT a.idArchivo, u.idUsuario, a.file_name, u.user, a.FechaModificacion "+
+        "FROM USUARIO u "+
+        "INNER JOIN ARCHIVO a ON u.idUsuario = a.propietario "+
+        "WHERE a.private = 0 AND u.idUsuario <> " + idUser +
+        " GROUP BY u.idUsuario, u.user "+
+        "ORDER BY u.user ASC "+
+        ") aux "+
+    "INNER JOIN( "+
+            "(SELECT usuario2 as idUsuario FROM AMIGO where usuario1 = "+ idUser +" ) "+
+            "UNION "+
+            "(SELECT usuario1 as idUsuario FROM AMIGO where usuario2 = "+ idUser +" ) "+
+        ")aux1 ON aux.idUsuario = aux1.idUsuario "+
+    "ORDER BY aux.user ASC; "
+    ;
+
+    console.log(miQuery);
+    
+    conn.query(miQuery, function(err, result){
+        if(err || result[0] == undefined){
             console.log(err);
+            response.status(502).send('Status: false');
         }else{
             console.log(result);
-            response.send(result);
+            response.status(200).send(result);
         }
     }); 
 })
+
+/* // CONSULTA
+-- ---------------------------------------------------------------
+-- CONSULTAS PARA OBTENER ARCHIVOS PUBLICOS DE AMIGOS
+-- ---------------------------------------------------------------
+SELECT aux.idArchivo, aux.file_name, aux.user, date_format(aux.FechaModificacion, '%d/%m/%Y') AS FechaModificacion
+FROM (
+		SELECT a.idArchivo, u.idUsuario, a.file_name, u.user, a.FechaModificacion
+		FROM USUARIO u
+		INNER JOIN ARCHIVO a ON u.idUsuario = a.propietario
+		WHERE a.private = 0 AND u.idUsuario <> 1 -- mi id 
+		GROUP BY u.idUsuario, u.user 
+		ORDER BY u.user ASC
+	) aux
+INNER JOIN(
+		(SELECT usuario2 as idUsuario FROM AMIGO where usuario1 = 1) -- mi id 
+		UNION
+		(SELECT usuario1 as idUsuario FROM AMIGO where usuario2 = 1) -- mi id 
+    )aux1 ON aux.idUsuario = aux1.idUsuario
+ORDER BY aux.user ASC
+
 */
 
 export default appUsuario
