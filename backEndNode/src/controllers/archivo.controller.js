@@ -19,12 +19,12 @@ appLogin.use(function(req, res, next) {
   });
 
 appLogin.get('/holaArchivo', function (req, res ) {
-	res.json({messaje: 'Hola desde el controlador de log in'})
+	res.json({messaje: 'Hola desde el controlador de Archivo'})
 });
 
 
 
-// peticion para crear un archivo (subir)
+// CREAR ARCHIVO (SUBIRLO)
 appLogin.post('/uploadFile',(request, response)=>{
     //RECOGER DATOS
     var file_name = request.body.file_name;
@@ -47,7 +47,7 @@ appLogin.post('/uploadFile',(request, response)=>{
         }else{
             var miQuery2 = "INSERT INTO ARCHIVO(file_name, propietario, private, URL, FechaCreacion, FechaModificacion) " +
             'VALUES( ' + "\'"+file_name+"\' "+ 
-            ", "+user + 
+            ", "+idUsuario + 
             ", "+privado + 
             ", \'"+file+"\' , DATE_SUB(now(), INTERVAL 6 HOUR), "+
             "DATE_SUB(now(), INTERVAL 6 HOUR));"
@@ -67,7 +67,7 @@ appLogin.post('/uploadFile',(request, response)=>{
 })
 
 
-//  PETICION PARA BORRAR UN ARCHIVO
+//  BORRAR ARCHIVO
 
 appLogin.post('/deleteFile',(request, response)=>{
     //RECOGER DATOS
