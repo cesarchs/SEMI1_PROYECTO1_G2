@@ -11,7 +11,7 @@ export function Login(){
                     <hr/>
                     <form>
                         <div className="form-group mt-3">
-                            <input name="nickname" type="text" className="form-control" placeholder="Nombre de Usuario"/>
+                            <input name="nickname" type="text" className="form-control" placeholder="Nombre de Usuario o Correo"/>
                         </div>
                         <div className="form-group mt-3">
                             <input name="password" type="password" className="form-control" placeholder="Contraseña"/>

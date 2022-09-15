@@ -1,41 +1,49 @@
 import React from "react"
-import { GrDocumentPdf, GrDocument, GrDocumentTxt, GrDocumentImage } from "react-icons/gr";
 
-export function File({fileName, fileType, owner, date, visibility}){
+import { VscFilePdf, VscFileMedia, VscFile } from "react-icons/vsc";
+
+import { EditModal } from "./edit-modal"
+
+export function File({id, fileName, fileType, owner, date, isPrivate, editable}){
     
-    let icon =<GrDocument size="30px"/>;
+    //ICON 
+    let icon =<VscFile size="30px" className="me-2"/>;
+
     if(fileType.toLowerCase() === 'pdf'){
-        icon = <GrDocumentPdf size="30px"/>
-    }else if(fileType.toLowerCase() === 'txt'){
-        icon = <GrDocumentTxt size="30px"/>
+        icon = <VscFilePdf size="30px" className="me-2"/>
     }else if(fileType.toLowerCase() === 'img'){
-        icon = <GrDocumentImage size="30px"/>
+        icon = <VscFileMedia size="30px" className="me-2"/>
+    }
+
+    //PRIVATE OR PUBLIC
+    let visibility = <small className="text-success">Público</small>
+    if(isPrivate === true){
+        visibility = <small className="text-danger">Público</small>
     }
 
     return( 
-        <div className="card mb-2">
-            {icon}
+        <div className="card mb-2 bg-light">
             <div className="card-body p-1 m-1">
-                {/* <div class="d-flex w-100 justify-content-around"> */}
                 <div className="row">
                     <div className="col-4">
+                        {icon}
                         {fileName}
                     </div>
-                    <div className="col-2">
+                    <div className="col-2 text-center">
                         <small className="text-secondary">{owner}</small>
                     </div>
-                    <div className="col-2">
-                        <small className="[text-secondary">{date}</small>
+                    <div className="col-2 text-center">
+                        <small className="text-secondary">{date}</small>
                     </div>
-                    <div className="col-2">
-                        <small className="text-secondary">{visibility}</small>
+                    <div className="col-2 text-center">
+                        {visibility}
                     </div>
-                    <div className="col-2">
-                        <span href="/home" className="bg-danger text-light p-1">Editar</span>
-                        <span href="/home" className="bg-primary text-light p-1 ms-2">Ver</span>
+                    <div className="col-2 text-center">
+                        { editable && <span role="button" className="btn btn-sm btn-outline-danger">Editar</span> }
+                        <span role="button" className="btn btn-sm btn-outline-primary ms-2">Ver</span>
                     </div>
-
                 </div>
+                <EditModal/>
             </div>
         </div>
     );
