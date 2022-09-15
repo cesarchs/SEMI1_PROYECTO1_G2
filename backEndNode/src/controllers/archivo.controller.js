@@ -28,7 +28,7 @@ appLogin.get('/holaArchivo', function (req, res ) {
 appLogin.post('/uploadFile',(request, response)=>{
     //RECOGER DATOS
     var file_name = request.body.file_name;
-    var user = request.body.user;
+    var idUsuario = request.body.idUsuario;
     var privado = request.body.private;
     var file = request.body.file;
     var pwd = request.body.pwd;
@@ -36,7 +36,7 @@ appLogin.post('/uploadFile',(request, response)=>{
     var hash = sha256(pwd);
 
     var miQuery = "SELECT * FROM USUARIO " +
-    'WHERE ( idUsuario = ' + "\'"+user+"\' "+ 
+    'WHERE ( idUsuario = ' + "\'"+idUsuario+"\' "+ 
     'AND pwd = '+"\'"+hash+"\' ); " 
     ;
     console.log(miQuery);
@@ -63,11 +63,48 @@ appLogin.post('/uploadFile',(request, response)=>{
                 }
             });
         }
-    });
-
-    
-     
+    });     
 })
 
 
+//  PETICION PARA BORRAR UN ARCHIVO
+
+appLogin.post('/deleteFile',(request, response)=>{
+    //RECOGER DATOS
+    var idUsuario = request.body.idUsuario;
+    var id_file = request.body.id_file;
+    var file_name = request.body.file_name;
+    var pwd = request.body.pwd;
+
+    var hash = sha256(pwd);
+
+    var miQuery = "SELECT * FROM USUARIO " +
+    'WHERE ( idUsuario = ' + "\'"+idUsuario+"\' "+ 
+    'AND pwd = '+"\'"+hash+"\' ); " 
+    ;
+    console.log(miQuery);
+    conn.query(miQuery, function(err, result){
+        if(err || result[0] == undefined ){
+            console.log(err );
+            response.status(502).send('Status: bad pwd');
+        }else{
+            var miQuery2 = "DELETE FROM ARCHIVO WHERE idArchivo = " +
+            id_file+ 
+            " AND propietario = "+ 
+            idUsuario 
+            ;
+            console.log(miQuery2);
+            conn.query(miQuery2, function(err, result){
+                if(err){
+                    console.log(err);
+                    response.status(502).send('Status: false');
+                }else{
+                    console.log(result[0]);
+                    response.status(200).send('Status: true');
+                }
+            });
+        }
+    });     
+})
+/* DELETE FROM ARCHIVO WHERE idArchivo = 10 AND propietario = 10;  */
 export default appLogin

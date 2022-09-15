@@ -15,5 +15,6 @@ Router.post('/register',appUsuario)
 Router.get('/userFiles/:idUser',appUsuario)
 Router.get('/friendFiles/:idUser',appUsuario)
 Router.post('/uploadFile',appArchivo)
+Router.post('/deleteFile',appArchivo)
 
 export default Router

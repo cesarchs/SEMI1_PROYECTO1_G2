@@ -1,8 +1,10 @@
+import 'dotenv/config' 
+
 let db_credentials = {
-    host: "bdproyecto1.cgofcdyhh2sv.us-east-1.rds.amazonaws.com",
+    host: process.env.DB_HOST,
     port: 2022,
-    user: "admin",
-    password: "administrador12345",
-    database: "BD_PROYECTO1"
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 }
 export default db_credentials;
