@@ -103,26 +103,5 @@ appUsuario.get('/friendFiles/:idUser',(request, response)=>{
     }); 
 })
 
-/* // CONSULTA
--- ---------------------------------------------------------------
--- CONSULTAS PARA OBTENER ARCHIVOS PUBLICOS DE AMIGOS
--- ---------------------------------------------------------------
-SELECT aux.idArchivo, aux.file_name, aux.user, date_format(aux.FechaModificacion, '%d/%m/%Y') AS FechaModificacion
-FROM (
-		SELECT a.idArchivo, u.idUsuario, a.file_name, u.user, a.FechaModificacion
-		FROM USUARIO u
-		INNER JOIN ARCHIVO a ON u.idUsuario = a.propietario
-		WHERE a.private = 0 AND u.idUsuario <> 1 -- mi id 
-		GROUP BY u.idUsuario, u.user 
-		ORDER BY u.user ASC
-	) aux
-INNER JOIN(
-		(SELECT usuario2 as idUsuario FROM AMIGO where usuario1 = 1) -- mi id 
-		UNION
-		(SELECT usuario1 as idUsuario FROM AMIGO where usuario2 = 1) -- mi id 
-    )aux1 ON aux.idUsuario = aux1.idUsuario
-ORDER BY aux.user ASC
-
-*/
 
 export default appUsuario

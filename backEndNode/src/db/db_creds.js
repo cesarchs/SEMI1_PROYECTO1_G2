@@ -1,8 +1,8 @@
 let db_credentials = {
-    host: "bb-proyecto1.cnfqil8nch1m.us-east-1.rds.amazonaws.com",
-    port: 2121,
+    host: "bdproyecto1.cgofcdyhh2sv.us-east-1.rds.amazonaws.com",
+    port: 2022,
     user: "admin",
     password: "administrador12345",
-    database: "BD_PROYECTO1_GRUPO2"
+    database: "BD_PROYECTO1"
 }
 export default db_credentials;
