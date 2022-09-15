@@ -12,7 +12,7 @@ let data = [
         fileType:"pdf",
         owner: "Yo", 
         date:"09/06/2022",
-        isPrivate:true
+        isPrivate:1
     },
     {
         id:2,
@@ -21,7 +21,7 @@ let data = [
         fileType:"txt",
         owner: "Yo", 
         date:"09/06/2022",
-        isPrivate:false
+        isPrivate:0
     },
     {
         id:2,
@@ -30,7 +30,7 @@ let data = [
         fileType:"img",
         owner: "Yo", 
         date:"09/06/2022",
-        isPrivate:false
+        isPrivate:0
     }
 ]
 

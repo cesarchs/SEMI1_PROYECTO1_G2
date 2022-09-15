@@ -17,8 +17,8 @@ export function File({id, fileName, fileType, owner, date, isPrivate, editable})
 
     //PRIVATE OR PUBLIC
     let visibility = <small className="text-success">Público</small>
-    if(isPrivate === true){
-        visibility = <small className="text-danger">Público</small>
+    if(isPrivate === 1){
+        visibility = <small className="text-danger">Privado</small>
     }
 
     return( 
@@ -43,7 +43,7 @@ export function File({id, fileName, fileType, owner, date, isPrivate, editable})
                         <span role="button" className="btn btn-sm btn-outline-primary ms-2">Ver</span>
                     </div>
                 </div>
-                <EditModal/>
+                {/* <EditModal/> */}
             </div>
         </div>
     );
