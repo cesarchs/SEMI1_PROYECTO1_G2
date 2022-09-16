@@ -33,4 +33,8 @@ export default Router
  uploadFile -> trabaja correctamente.
  deleteFile -> trabaja correctamente. al no existir el documento a eliminar retorna false
  editFile -> tabaja correctamente, al no existir usuario o contrasena retorna bad pwd, // falla, al no existir el id del archivo, retorna true por que ejecuta la query, mas no afecta en las tablas
+ 
+ NOTAS:
+ SI NO TIENE ARCHIVOS PUBLICOS O PRIVADOS NO VA A APARCER PARA AGREGAR COMO AMIGO.
+ 
  */
