@@ -2,8 +2,6 @@ import React from "react"
 
 import { VscFilePdf, VscFileMedia, VscFile } from "react-icons/vsc";
 
-import { EditModal } from "./edit-modal"
-
 export function File({id, fileName, fileType, owner, date, isPrivate, editable}){
     
     //ICON 

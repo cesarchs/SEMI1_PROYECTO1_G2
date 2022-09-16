@@ -86,7 +86,7 @@ export function MyFiles(){
             
             {/* CONTENT */}
             <FilesHeader />
-            {
+            {/* {
                 Object.values(currentFiles).map((obj) => {
                     return (
                         <File 
@@ -100,7 +100,7 @@ export function MyFiles(){
                         />
                     )
                 })
-            }
+            } */}
 
             {/* EDIT  */}
 

@@ -12,6 +12,9 @@ export function Dashboard(){
         setToggleState(index);
     };
 
+    let fullname = localStorage.getItem("fullname");
+    let photo = localStorage.getItem("photo");
+
     return(
         <div className="container">
             <div className="row mt-3 justify-content-center">
@@ -21,8 +24,8 @@ export function Dashboard(){
                         {/* LOGO */}
                         <h4 className="text-center mb-3 text-dark">SuperStorage</h4>
                         <div className="mb-4">
-                            <img src="https://dummyimage.com/300x300/000/fff" width="100%" alt=""></img>
-                            <h5 className="text-center text-danger mt-4"> Nombre Usuario</h5>
+                            <img src={photo} width="100%" alt=""></img>
+                            <h5 className="text-center text-danger mt-4">{fullname}</h5>
                         </div>
                         {/* MENU */}
                         <span role="button" className={toggleState === 1 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2"} 
