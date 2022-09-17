@@ -2,11 +2,10 @@ import React from "react"
 
 import { VscFilePdf, VscFileMedia, VscFile } from "react-icons/vsc";
 
-export function File({id, fileName, fileType, owner, date, isPrivate, editable}){
+export function File({id, url, fileName, fileType, owner, date, isPrivate, editable}){
     
     //ICON 
     let icon =<VscFile size="30px" className="me-2"/>;
-
     if(fileType.toLowerCase() === 'pdf'){
         icon = <VscFilePdf size="30px" className="me-2"/>
     }else if(fileType.toLowerCase() === 'img'){
@@ -14,13 +13,19 @@ export function File({id, fileName, fileType, owner, date, isPrivate, editable})
     }
 
     //PRIVATE OR PUBLIC
-    let visibility = <small className="text-success">Público</small>
-    if(isPrivate === 1){
-        visibility = <small className="text-danger">Privado</small>
-    }
+    let visibility = isPrivate === 1 ? 
+        <small className="text-danger">Privado</small> : 
+        <small className="text-success">Público</small>
+
+// "idArchivo": 1,
+// "file_name": "archivo1",
+// "private": 1,
+// "URL": "archivo1.pdf",
+// "FechaCreada": "16/09/2022",
+// "FechaModificacion": "16/09/2022"
 
     return( 
-        <div className="card mb-2 bg-light">
+        <div key={id} className="card mb-2 bg-light">
             <div className="card-body p-1 m-1">
                 <div className="row">
                     <div className="col-4">
