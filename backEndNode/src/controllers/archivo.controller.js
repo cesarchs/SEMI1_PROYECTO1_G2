@@ -31,6 +31,7 @@ appLogin.post('/uploadFile',(request, response)=>{
     var idUsuario = request.body.idUsuario;
     var privado = request.body.private;
     var file = request.body.file;
+    var tipoArchivo = request.body.tipoArchivo;
     var pwd = request.body.pwd;
 
     var hash = sha256(pwd);
@@ -45,8 +46,9 @@ appLogin.post('/uploadFile',(request, response)=>{
             console.log(err );
             response.status(502).send('Status: bad pwd');
         }else{
-            var miQuery2 = "INSERT INTO ARCHIVO(file_name, propietario, private, URL, FechaCreacion, FechaModificacion) " +
+            var miQuery2 = "INSERT INTO ARCHIVO(file_name, tipoArchivo, propietario, private, URL, FechaCreacion, FechaModificacion) " +
             'VALUES( ' + "\'"+file_name+"\' "+ 
+            ", \'"+tipoArchivo+"\' "  + 
             ", "+idUsuario + 
             ", "+privado + 
             ", \'"+file+"\' , DATE_SUB(now(), INTERVAL 6 HOUR), "+

@@ -71,7 +71,7 @@ appUsuario.post('/register',(request, response)=>{
 
 appUsuario.get('/userFiles/:idUser',(request, response)=>{
     var idUser = request.params.idUser;
-    var miQuery = "SELECT idArchivo, file_name, private, URL, date_format(FechaCreacion, '%d/%m/%Y') as FechaCreada , date_format(FechaModificacion, '%d/%m/%Y') as FechaModificacion " +
+    var miQuery = "SELECT idArchivo, tipoArchivo, file_name, private, URL, date_format(FechaCreacion, '%d/%m/%Y') as FechaCreada , date_format(FechaModificacion, '%d/%m/%Y') as FechaModificacion " +
     "FROM ARCHIVO WHERE propietario = '" +idUser+"'"+" ORDER BY private ASC;"
     ;
     console.log(miQuery);
@@ -90,9 +90,9 @@ appUsuario.get('/userFiles/:idUser',(request, response)=>{
 
 appUsuario.get('/friendFiles/:idUser',(request, response)=>{
     var idUser = request.params.idUser;
-    var miQuery = "SELECT aux.idArchivo, aux.file_name, aux.user, date_format(aux.FechaModificacion, '%d/%m/%Y') AS FechaModificacion " +
+    var miQuery = "SELECT aux.idArchivo, aux.tipoArchivo, aux.URL , aux.file_name, aux.user, date_format(aux.FechaModificacion, '%d/%m/%Y') AS FechaModificacion " +
     "FROM ( "+
-        "SELECT a.idArchivo, u.idUsuario, a.file_name, u.user, a.FechaModificacion "+
+        "SELECT a.idArchivo, a.tipoArchivo, a.URL , u.idUsuario, a.file_name, u.user, a.FechaModificacion "+
         "FROM USUARIO u "+
         "INNER JOIN ARCHIVO a ON u.idUsuario = a.propietario "+
         "WHERE a.private = 0 AND u.idUsuario <> " + idUser +
@@ -126,28 +126,16 @@ appUsuario.get('/friendFiles/:idUser',(request, response)=>{
 
 appUsuario.get('/allUsers/:idUser',(request, response)=>{
     var idUser = request.params.idUser;
-    var miQuery = "SELECT aux.idUsuario, aux.user, aux.ArchivosPublicos , aux.ArchivosPrivados " +
-    "FROM ( "+
-            "SELECT u.idUsuario, u.user, COUNT(CASE WHEN a.private = 0 THEN 0 END) as ArchivosPublicos, COUNT(CASE WHEN a.private=1 THEN 1 END) as ArchivosPrivados "+
-            "FROM USUARIO u "+
-            "INNER JOIN ARCHIVO a ON u.idUsuario = a.propietario "+
-            "WHERE u.idUsuario <> "+ idUser +
-            " GROUP BY u.idUsuario, u.user "+
-            "ORDER BY u.idUsuario ASC "+
-        ") aux "+
-    "LEFT JOIN (SELECT usuario2 as idUsuario FROM AMIGO where usuario1 = "+ idUser + ") aux1 ON aux.idUsuario = aux1.idUsuario "+
-    "LEFT JOIN (SELECT usuario1 as idUsuario FROM AMIGO where usuario2 = "+ idUser + ") aux2 ON aux.idUsuario = aux2.idUsuario "+
-    "WHERE aux1.idUsuario is NULL AND aux2.idUsuario is NULL "+
-    "ORDER BY aux.user ASC ; "
+    var miQuery = "CALL NuevosAmigos( "+ idUser + " );"
     ;
     console.log(miQuery);
     conn.query(miQuery, function(err, result){
-        if(err || result[0] == undefined){
+        if(err){
             console.log(err);
             response.status(502).send('Status: false');
-        }else{
+        }else {
             console.log(result);
-            response.status(200).send(result);
+            response.status(200).send(result[0]);
         }
     }); 
 })
