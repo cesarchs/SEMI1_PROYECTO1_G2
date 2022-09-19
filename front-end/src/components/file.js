@@ -1,9 +1,15 @@
-import React from "react"
+import React, { useState } from "react"
 
 import { VscFilePdf, VscFileMedia, VscFile } from "react-icons/vsc";
 
 export function File({id, url, fileName, fileType, owner, date, isPrivate, editable}){
     
+    const [editFile, setEditFile] = useState(false);
+
+    const showModal = (value) => {
+        setEditFile(value);
+    };
+
     //ICON 
     let icon =<VscFile size="30px" className="me-2"/>;
     if(fileType.toLowerCase() === 'pdf'){
@@ -16,13 +22,6 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
     let visibility = isPrivate === 1 ? 
         <small className="text-danger">Privado</small> : 
         <small className="text-success">Público</small>
-
-// "idArchivo": 1,
-// "file_name": "archivo1",
-// "private": 1,
-// "URL": "archivo1.pdf",
-// "FechaCreada": "16/09/2022",
-// "FechaModificacion": "16/09/2022"
 
     return( 
         <div key={id} className="card mb-2 bg-light">
@@ -43,10 +42,12 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
                     </div>
                     <div className="col-2 text-center">
                         { editable && <span role="button" className="btn btn-sm btn-outline-danger">Editar</span> }
-                        <span role="button" className="btn btn-sm btn-outline-primary ms-2">Ver</span>
+                        <a href={url} target="_blank" rel="noreferrer" role="button" className="btn btn-sm btn-outline-primary ms-2">Ver</a>
                     </div>
                 </div>
                 {/* <EditModal/> */}
+
+                
             </div>
         </div>
     );

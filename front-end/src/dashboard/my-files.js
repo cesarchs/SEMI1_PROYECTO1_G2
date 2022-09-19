@@ -14,7 +14,7 @@ export class MyFiles extends React.Component{
     }
 
     componentWillMount() {
-        let url = "http://localhost:5000/apiUsuarioN/userFiles/1";
+        let url = "http://localhost:5000/apiUsuarioN/userFiles/"+ localStorage.getItem("idUsuario");
         let status = 0;
         fetch(url, {
             method:'GET',
