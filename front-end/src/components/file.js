@@ -12,10 +12,12 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
 
     //ICON 
     let icon =<VscFile size="30px" className="me-2"/>;
-    if(fileType.toLowerCase() === 'pdf'){
-        icon = <VscFilePdf size="30px" className="me-2"/>
-    }else if(fileType.toLowerCase() === 'img'){
-        icon = <VscFileMedia size="30px" className="me-2"/>
+    if(fileType !== undefined){
+        if(fileType.toLowerCase() === 'pdf'){
+            icon = <VscFilePdf size="30px" className="me-2"/>
+        }else if(fileType.toLowerCase() === 'img'){
+            icon = <VscFileMedia size="30px" className="me-2"/>
+        }
     }
 
     //PRIVATE OR PUBLIC

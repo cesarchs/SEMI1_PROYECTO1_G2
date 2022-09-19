@@ -3,7 +3,7 @@ import React from "react";
 import { File } from "../components/file";
 import { FilesHeader } from "../components/files-header";
 
-export class MyFiles extends React.Component{
+export class FriendFiles extends React.Component{
     constructor(props){
         super(props)
         
@@ -14,7 +14,7 @@ export class MyFiles extends React.Component{
     }
 
     componentWillMount() {
-        let url = "http://localhost:5000/apiUsuarioN/userFiles/"+ localStorage.getItem("idUsuario");
+        let url = "http://localhost:5000/apiUsuarioN/friendFiles/"+ localStorage.getItem("idUsuario");
         let status = 0;
         fetch(url, {
             method:'GET',
@@ -44,65 +44,74 @@ export class MyFiles extends React.Component{
             <div className="container p-0">
                 {/* TITLE */}
                 <div className="nav navbar navbar-inverse navbar-expand-lg p-0">
-                    <h4 className="navbar-brand">Mis Archivos</h4>
+                    <h4 className="navbar-brand">Archivos de Amigos</h4>
                     <div className="navbar-nav">
                         <span role="button" className={this.state.tab === 1 ? "btn btn-sm bg-danger text-light" : "btn btn-sm"} 
                                 onClick={() => this.selectedTab(1)}>Todos</span>
                         <span role="button" className={this.state.tab === 2 ? "btn btn-sm bg-danger text-light ms-2" : "btn btn-sm ms-2"} 
-                                onClick={() => this.selectedTab(2)}>Privados</span>
-                        <span role="button" className={this.state.tab === 3 ? "btn btn-sm bg-danger text-light ms-2" : "btn btn-sm ms-2"} 
-                                onClick={() => this.selectedTab(3)}>Públicos</span>
+                                onClick={() => this.selectedTab(2)}>Filtrar</span>
                     </div>
                 </div>
                 <hr className="mb-3 mt-2"></hr>
                 
-                {/* CONTENT */}
-                <FilesHeader />
+            {/* CONTENT */}
+
+            {/* FORM BUSCAR */}
+            {
+                this.state.tab === 2 &&
+                <div className="mb-3">
+                    <form>
+                        <div className="row">
+                                <div className="col">
+                                    <input className="form-control" type="search" placeholder="Buscar Archivo" aria-label="Search"/>
+                                </div>
+                                <div className="col">
+                                    <button className="btn btn-danger" type="submit">Buscar</button>
+                                </div>
+                                <div className="col">
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected value="all">Todos</option>
+                                        <option value="pdf">PDF</option>
+                                        <option value="txt">TXT</option>
+                                        <option value="img">Imagen</option>
+                                    </select>
+                                </div>
+                        </div>
+                    </form>
+                </div>
+            }
 
             {/* TODOS LOS ARCHIVOS */}
+            <FilesHeader />
             {
                 files && this.state.tab === 1 && files.map( (obj, i) => {
                     return( <File id={obj.idArchivo} 
                                 url={obj.URL}
                                 fileName={obj.file_name}
                                 fileType={obj.tipoArchivo}
-                                owner={"Yo"}
+                                owner={obj.user}
                                 date={obj.FechaCreada}
                                 isPrivate={obj.private}
-                                editable={true}/>
-                        )
-                })
-            }
-                
-            {/* ARCHIVOS PRIVADOS */}
-            {
-                files && this.state.tab === 2 && files.filter((obj) => { return obj.private}).map( (obj, i) => {
-                    return( <File id={obj.idArchivo} 
-                                url={obj.URL} 
-                                fileName={obj.file_name}
-                                fileType={"pdf"}
-                                owner={"Yo :p"}
-                                date={obj.FechaCreada}
-                                isPrivate={obj.private}
-                                editable={true}/>
+                                editable={false}/>
                         )
                 })
             }
 
-            {/* ARCHIVOS PPUBLICOS */}
+            {/* ARCHIVOS CON FILTRO DE BUSQUEDA */}
             {
-                files && this.state.tab === 3 && files.filter((obj) => { return ! obj.private}).map( (obj, i) => {
+                files && this.state.tab === 2 && files.map( (obj, i) => {
                     return( <File id={obj.idArchivo} 
-                                url={obj.URL} 
+                                url={obj.URL}
                                 fileName={obj.file_name}
-                                fileType={"pdf"}
-                                owner={"Yo :p"}
+                                fileType={obj.tipoArchivo}
+                                owner={obj.user}
                                 date={obj.FechaCreada}
                                 isPrivate={obj.private}
-                                editable={true}/>
+                                editable={false}/>
                         )
                 })
-            } 
+            }
+
 
         </div>
         );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { MyFiles } from "../dashboard/my-files";
-import { FriendFiles, MyFriends } from "../dashboard/friends";
+import { FriendFiles } from "../dashboard/friend-files";
 import { UploadFile } from "../dashboard/upload-file";
 
 export function Dashboard(){
@@ -44,19 +44,19 @@ export function Dashboard(){
                 <div className="col-lg-9">
                     <div className="container bg-light shadow p-5 fh">
                         {/* MY FILES */}
-                        <div className={toggleState === 1 ? "show-active" : "d-none"}>
+                        <div key={1} className={toggleState === 1 ? "show-active" : "d-none"}>
                             <MyFiles></MyFiles>
                         </div>
                         {/* FRIENDS' FILES */}
-                        <div className={toggleState === 2 ? "show-active" : "d-none"}>
+                        <div key={2} className={toggleState === 2 ? "show-active" : "d-none"}>
                             <FriendFiles></FriendFiles>
                         </div>
                         {/* MY FRIENDS */}
-                        <div className={toggleState === 3 ? "show-active" : "d-none"}>
-                            <MyFriends></MyFriends>
+                        <div key={3} className={toggleState === 3 ? "show-active" : "d-none"}>
+                            AMIGOS
                         </div>
                         {/* UPLOAD A FILE */}
-                        <div className={toggleState === 4 ? "show-active" : "d-none"}>
+                        <div key={4} className={toggleState === 4 ? "show-active" : "d-none"}>
                             <UploadFile></UploadFile>
                         </div>
                     </div>
