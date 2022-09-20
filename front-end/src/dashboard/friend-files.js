@@ -85,7 +85,9 @@ export class FriendFiles extends React.Component{
             <FilesHeader />
             {
                 files && this.state.tab === 1 && files.map( (obj, i) => {
-                    return( <File id={obj.idArchivo} 
+                    return( <File 
+                                key={i} 
+                                id={obj.idArchivo} 
                                 url={obj.URL}
                                 fileName={obj.file_name}
                                 fileType={obj.tipoArchivo}
@@ -100,7 +102,9 @@ export class FriendFiles extends React.Component{
             {/* ARCHIVOS CON FILTRO DE BUSQUEDA */}
             {
                 files && this.state.tab === 2 && files.map( (obj, i) => {
-                    return( <File id={obj.idArchivo} 
+                    return( <File 
+                                key={i} 
+                                id={obj.idArchivo} 
                                 url={obj.URL}
                                 fileName={obj.file_name}
                                 fileType={obj.tipoArchivo}

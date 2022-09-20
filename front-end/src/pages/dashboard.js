@@ -22,13 +22,14 @@ export function Dashboard(){
                 <div className="col-lg-3">
                     <div className="container bg-light shadow p-4">
                         {/* LOGO */}
-                        <h4 className="text-center mb-3 text-dark">SuperStorage</h4>
+                        <h3 className="text-center mb-3 text-dark">SuperStorage</h3>
+                        <hr/>
                         <div className="mb-4">
                             <img src={photo} width="100%" alt=""></img>
-                            <h5 className="text-center text-danger mt-4">{fullname}</h5>
+                            <h5 className="text-center text-danger mt-3">{fullname}</h5>
                         </div>
                         {/* MENU */}
-                        <span role="button" className={toggleState === 1 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2"} 
+                        <span role="button" className={toggleState === 1 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2 "} 
                             onClick={() => toggleTab(1)}>Mis Archivos</span>
                         <span role="button" className={toggleState === 2 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2"} 
                             onClick={() => toggleTab(2)}>Archivos de Amigos</span>
@@ -42,7 +43,7 @@ export function Dashboard(){
                 </div>
                 {/* CONTENT */}
                 <div className="col-lg-9">
-                    <div className="container bg-light shadow p-5 fh">
+                    <div className="container bg-light shadow p-4 fh">
                         {/* MY FILES */}
                         <div key={1} className={toggleState === 1 ? "show-active" : "d-none"}>
                             <MyFiles></MyFiles>

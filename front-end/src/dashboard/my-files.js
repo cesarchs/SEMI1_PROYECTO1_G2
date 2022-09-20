@@ -62,7 +62,9 @@ export class MyFiles extends React.Component{
             {/* TODOS LOS ARCHIVOS */}
             {
                 files && this.state.tab === 1 && files.map( (obj, i) => {
-                    return( <File id={obj.idArchivo} 
+                    return( <File
+                                key={i} 
+                                id={obj.idArchivo} 
                                 url={obj.URL}
                                 fileName={obj.file_name}
                                 fileType={obj.tipoArchivo}
@@ -77,10 +79,12 @@ export class MyFiles extends React.Component{
             {/* ARCHIVOS PRIVADOS */}
             {
                 files && this.state.tab === 2 && files.filter((obj) => { return obj.private}).map( (obj, i) => {
-                    return( <File id={obj.idArchivo} 
+                    return( <File 
+                                key={i} 
+                                id={obj.idArchivo} 
                                 url={obj.URL} 
                                 fileName={obj.file_name}
-                                fileType={"pdf"}
+                                fileType={obj.tipoArchivo}
                                 owner={"Yo :p"}
                                 date={obj.FechaCreada}
                                 isPrivate={obj.private}
@@ -92,10 +96,12 @@ export class MyFiles extends React.Component{
             {/* ARCHIVOS PPUBLICOS */}
             {
                 files && this.state.tab === 3 && files.filter((obj) => { return ! obj.private}).map( (obj, i) => {
-                    return( <File id={obj.idArchivo} 
+                    return( <File 
+                                key={i} 
+                                id={obj.idArchivo} 
                                 url={obj.URL} 
                                 fileName={obj.file_name}
-                                fileType={"pdf"}
+                                fileType={obj.tipoArchivo}
                                 owner={"Yo :p"}
                                 date={obj.FechaCreada}
                                 isPrivate={obj.private}
