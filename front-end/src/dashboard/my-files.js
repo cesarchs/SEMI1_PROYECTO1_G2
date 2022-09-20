@@ -41,7 +41,7 @@ export class MyFiles extends React.Component{
         const { files } = this.state;
 
         return(
-            <div className="container p-0">
+            <div className="container">
                 {/* TITLE */}
                 <div className="nav navbar navbar-inverse navbar-expand-lg p-0">
                     <h4 className="navbar-brand">Mis Archivos</h4>

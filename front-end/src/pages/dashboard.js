@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { MyFiles } from "../dashboard/my-files";
 import { FriendFiles } from "../dashboard/friend-files";
 import { UploadFile } from "../dashboard/upload-file";
+import { Friends } from "../dashboard/friends";
 
 export function Dashboard(){
 
@@ -10,6 +11,10 @@ export function Dashboard(){
 
     const toggleTab = (index) => {
         setToggleState(index);
+        if(index === 5){
+            localStorage.clear();
+            window.location.href = "./"
+        }
     };
 
     let fullname = localStorage.getItem("fullname");
@@ -34,7 +39,7 @@ export function Dashboard(){
                         <span role="button" className={toggleState === 2 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2"} 
                             onClick={() => toggleTab(2)}>Archivos de Amigos</span>
                         <span role="button" className={toggleState === 3 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2"} 
-                            onClick={() => toggleTab(3)}>Mis Amigos</span>
+                            onClick={() => toggleTab(3)}>Amigos</span>
                         <span role="button" className={toggleState === 4 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2"} 
                             onClick={() => toggleTab(4)}>Subir Archivo</span>
                         <span role="button" className={toggleState === 5 ? "btn bg-danger text-light d-block mb-2 shadow" : "btn text-danger d-block mb-2"} 
@@ -42,7 +47,7 @@ export function Dashboard(){
                     </div>
                 </div>
                 {/* CONTENT */}
-                <div className="col-lg-9">
+                <div className="col-lg-9" >
                     <div className="container bg-light shadow p-4 fh">
                         {/* MY FILES */}
                         <div key={1} className={toggleState === 1 ? "show-active" : "d-none"}>
@@ -54,7 +59,7 @@ export function Dashboard(){
                         </div>
                         {/* MY FRIENDS */}
                         <div key={3} className={toggleState === 3 ? "show-active" : "d-none"}>
-                            AMIGOS
+                            <Friends></Friends>
                         </div>
                         {/* UPLOAD A FILE */}
                         <div key={4} className={toggleState === 4 ? "show-active" : "d-none"}>

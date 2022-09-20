@@ -138,7 +138,7 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="submit" className="btn btn-danger" data-dismiss="modal" onClick={handleClickEliminate}>Eliminar Arcivo</button>
+                                <button type="submit" className="btn btn-danger" data-dismiss="modal" onClick={handleClickEliminate}>Eliminar Archivo</button>
                                 <button type="submit" className="btn btn-primary" data-dismiss="modal" onClick={handleClick}>Guardar Cambios</button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                             </div> 
