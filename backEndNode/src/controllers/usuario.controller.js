@@ -7,10 +7,21 @@ import express from 'express'
 const appUsuario = express() // creamos instancia de express para exportar al .router
 import bodyParser from 'body-parser'
 appUsuario.use(bodyParser.json());
+/**
+ * Básicamente, lo que body-parser es lo que permite a Express leer el cuerpo 
+ * y luego analizarlo en un objeto Json que podamos entender
+ */
+
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
 
-
+/**
+ * El encabezado de respuesta Access-Control-Allow-Origin 
+ * indica si los recursos de la respuesta pueden ser compartidos con el origen (en-US) dado
+ * 
+ * El encabezado de respuesta Access-Control-Allow-Headers es usado en la respuesta a una 
+ * solicitud preflight para indicar cuáles encabezados HTTP pueden ser usados durante dicha solicitud
+ */
 appUsuario.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -166,6 +177,22 @@ appUsuario.post('/addFriend',(request, response)=>{
     }); 
 })
 
+
+appUsuario.get('/myFriends/:idUser',(request, response)=>{
+    var idUser = request.params.idUser;
+    var miQuery = "CALL MisAmigos( "+ idUser + ");"
+    ;
+    console.log(miQuery);
+    conn.query(miQuery, function(err, result){
+        if(err){
+            console.log(err);
+            response.status(502).send('Status: false');
+        }else {
+            console.log(result);
+            response.status(200).send(result[0]);
+        }
+    }); 
+})
 
 
 export default appUsuario
