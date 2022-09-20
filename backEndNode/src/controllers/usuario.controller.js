@@ -19,6 +19,13 @@ import {VerS3, holaU, getPhoto, subirfoto } from './uploader.controller.js'
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
 
+
+/** VARIABLES DE NOMBRE DE TIPO DE ARCHIVOS CARGADOS A S3 */
+
+const imageS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/fotos/";
+const txtS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/txt/";
+const pdfS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/pdf/";
+
 /**
  * El encabezado de respuesta Access-Control-Allow-Origin 
  * indica si los recursos de la respuesta pueden ser compartidos con el origen (en-US) dado
@@ -41,10 +48,9 @@ appUsuario.get('/holaU', function (req, res ) {
 });
 
 
-appUsuario.post('/allPhotos',(req, res)=>{
+appUsuario.get('/allPhotos',(req, res)=>{
     VerS3(req, res)
 })
-
 
 
 appUsuario.post('/getPhoto',(req, res)=>{
@@ -52,20 +58,9 @@ appUsuario.post('/getPhoto',(req, res)=>{
 })
 
 
-appUsuario.post('/subirfoto',(req, res)=>{
-    subirfoto(req, res)
+appUsuario.post('/subirfoto',(req)=>{
+    subirfoto(req)
 })
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -76,7 +71,9 @@ appUsuario.post('/register',(request, response)=>{
     var fullname = request.body.fullname;
     var email = request.body.email;
     var pwd = request.body.pwd;
-    var photo = request.body.photo;
+
+    
+    var urlPhotoS3 = imageS3+user+".jpg" ;
 
     var hash = sha256(pwd);
 
@@ -91,12 +88,13 @@ appUsuario.post('/register',(request, response)=>{
             console.log(err);
             response.status(502).send('Status: UserExists');
         }else{
+            
             var miQuery2 = "insert into USUARIO (user,fullname, email,pwd,photo) VALUES ( " +
                             "\'"+user+"\' ,"+
                             "\'"+fullname+"\' ,"+
                             "\'"+email+"\' ,"+
                             "\'"+hash+"\', " +
-                            "\'"+photo+"\' );"
+                            "\'"+urlPhotoS3+"\' );"
                             ;
             console.log(miQuery2);
             conn.query(miQuery2, function(err, result){
@@ -104,6 +102,7 @@ appUsuario.post('/register',(request, response)=>{
                     console.log(err);
                     response.status(502).send('Status: false');
                 }else{
+                    subirfoto(request);
                     console.log(result[0]);
                     response.status(200).send('Status: true');
                 }

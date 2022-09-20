@@ -19,7 +19,7 @@ Router.get('/friendFiles/:idUser',  appUsuario)
 Router.get('/allUsers/:idUser',     appUsuario) // AUN SIN CONSULTA 
 Router.post('/addFriend',           appUsuario)
 Router.get('/myFriends/:idUser',    appUsuario)
-Router.post('/allPhotos',           appUsuario)
+Router.get('/allPhotos',            appUsuario)
 Router.post('/getPhoto',            appUsuario)
 Router.post('/subirfoto',           appUsuario)
 Router.post('/uploadFile',          appArchivo)
@@ -45,4 +45,7 @@ export default Router
  NOTAS:
  SI NO TIENE ARCHIVOS PUBLICOS O PRIVADOS NO VA A APARCER PARA AGREGAR COMO AMIGO.
  
+
+
+ se hicieron correxiones como el que ahora ya muestra bien los posibles amigos, asi como solo los amigos agregados
  */
