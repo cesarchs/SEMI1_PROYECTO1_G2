@@ -12,6 +12,10 @@ appUsuario.use(bodyParser.json());
  * y luego analizarlo en un objeto Json que podamos entender
  */
 
+/** importar s3 peticiones */
+
+import {VerS3, holaU, getPhoto, subirfoto } from './uploader.controller.js'
+
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
 
@@ -31,6 +35,40 @@ appUsuario.use(function(req, res, next) {
 appUsuario.get('/holaUsuario', function (req, res ) {
 	res.json({messaje: 'Hola desde controlador usuario'})
 });
+
+appUsuario.get('/holaU', function (req, res ) {
+	holaU(req,res)
+});
+
+
+appUsuario.post('/allPhotos',(req, res)=>{
+    VerS3(req, res)
+})
+
+
+
+appUsuario.post('/getPhoto',(req, res)=>{
+    getPhoto(req, res)
+})
+
+
+appUsuario.post('/subirfoto',(req, res)=>{
+    subirfoto(req, res)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // REGISTRAR USUARIO
 appUsuario.post('/register',(request, response)=>{

@@ -11,7 +11,7 @@ const Router = express();
 Router.get('/holaLogin',              appLogin) // de prueba
 Router.get('/holaUsuario',          appUsuario) // de prueba
 Router.get('/holaArchivo',          appArchivo) // de prueba
-Router.get('/holaUpload',                  app) // de prueba
+Router.get('/holaU',                appUsuario) // de prueba
 Router.post('/login',                 appLogin)
 Router.post('/register',            appUsuario)
 Router.get('/userFiles/:idUser',    appUsuario)
@@ -19,11 +19,15 @@ Router.get('/friendFiles/:idUser',  appUsuario)
 Router.get('/allUsers/:idUser',     appUsuario) // AUN SIN CONSULTA 
 Router.post('/addFriend',           appUsuario)
 Router.get('/myFriends/:idUser',    appUsuario)
+Router.post('/allPhotos',           appUsuario)
+Router.post('/getPhoto',            appUsuario)
+Router.post('/subirfoto',           appUsuario)
 Router.post('/uploadFile',          appArchivo)
 Router.post('/deleteFile',          appArchivo)
 Router.post('/editFile',            appArchivo)
-Router.post('/subirfoto',                  app)
-Router.post('/Prueba',                  app)
+
+
+
 
 export default Router
 

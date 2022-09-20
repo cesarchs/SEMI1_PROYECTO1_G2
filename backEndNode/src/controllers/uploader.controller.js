@@ -18,11 +18,17 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 
 
 //////////////////////////////////////////////////////////////////////////////////
-// /////////////////////////// PETICIONES DE CARGA ///////////////////////////////
+// /////////////////////////// FUNCIONES PARA S3  ////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
-app.get('/holaUpload', function (req, res ) {
+/**
+ *  // todas las funciones podian ser peticiones si se haria desde aca la peticion
+ *app.get('/holaUpload', function (req, res ) {
 	res.json({messaje: 'Hola desde controlador de upload'})
 });
+*/
+export function holaU (req, res ) {
+	res.json({messaje: 'Hola desde controlador de upload 2'})
+}
 
 
 app.post('/subirfoto', function (req, res){
@@ -56,7 +62,45 @@ app.post('/subirfoto', function (req, res){
 
 });
 
-app.post('/obtenerfoto', function (req, res) {
+
+export function subirfoto (req, res){
+
+    var id = req.body.id;
+    var foto = req.body.foto;
+    //carpeta y nombre que quieran darle a la imagen
+  
+    var nombrei = "fotos/" + id + ".jpg"; // fotos -> se llama la carpeta 
+    //se convierte la base64 a bytes
+    let buff = new Buffer.from(foto, 'base64');
+  
+
+
+    AWS.config.update({
+        region: aws_keys.s3.region, // se coloca la region del bucket 
+        accessKeyId: aws_keys.s3.accessKeyId,
+        secretAccessKey: aws_keys.s3.secretAccessKey
+    });
+
+    var s3 = new AWS.S3(); // se crea una variable que pueda tener acceso a las caracteristicas de S3
+    // metodo 1
+    const params = {
+      Bucket: "archivos-2grupo-p1",
+      Key: nombrei,
+      Body: buff,
+      ContentType: "image"
+    };
+    const putResult = s3.putObject(params).promise();
+    res.json({ mensaje: putResult })
+
+}
+
+
+
+
+
+
+
+export function getPhoto (req, res) {
     var id = req.body.id;
     var nombrei = "fotos/"+id+".jpg";
 
@@ -87,12 +131,13 @@ app.post('/obtenerfoto', function (req, res) {
 
     })
 
-});
+}
 
 
 
 
-app.post('/Prueba', function (req, res) {
+
+export function VerS3 (req, res) {
     var id = req.body.id;
     var nombrei = "fotos/"+id+".jpg";
 
@@ -117,13 +162,16 @@ app.post('/Prueba', function (req, res) {
             res.json(err)
         }else
         {
-           // var dataBase64 = Buffer.from(data.Body).toString('base64'); //resgresar de byte a base
             res.json({mensaje: data.Contents})
         }
 
     })
 
-});
+}
+
+
+
+
 
 
 
