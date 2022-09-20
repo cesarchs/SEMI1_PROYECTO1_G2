@@ -12,8 +12,19 @@ appUsuario.use(bodyParser.json());
  * y luego analizarlo en un objeto Json que podamos entender
  */
 
+/** importar s3 peticiones */
+
+import {VerS3, holaU, getPhoto, subirfoto } from './uploader.controller.js'
+
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
+
+
+/** VARIABLES DE NOMBRE DE TIPO DE ARCHIVOS CARGADOS A S3 */
+
+const imageS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/fotos/";
+const txtS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/txt/";
+const pdfS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/pdf/";
 
 /**
  * El encabezado de respuesta Access-Control-Allow-Origin 
@@ -32,13 +43,37 @@ appUsuario.get('/holaUsuario', function (req, res ) {
 	res.json({messaje: 'Hola desde controlador usuario'})
 });
 
+appUsuario.get('/holaU', function (req, res ) {
+	holaU(req,res)
+});
+
+
+appUsuario.get('/allPhotos',(req, res)=>{
+    VerS3(req, res)
+})
+
+
+appUsuario.post('/getPhoto',(req, res)=>{
+    getPhoto(req, res)
+})
+
+
+appUsuario.post('/subirfoto',(req)=>{
+    subirfoto(req)
+})
+
+
+
+
 // REGISTRAR USUARIO
 appUsuario.post('/register',(request, response)=>{
     var user = request.body.user;
     var fullname = request.body.fullname;
     var email = request.body.email;
     var pwd = request.body.pwd;
-    var photo = request.body.photo;
+
+    
+    var urlPhotoS3 = imageS3+user+".jpg" ;
 
     var hash = sha256(pwd);
 
@@ -53,12 +88,13 @@ appUsuario.post('/register',(request, response)=>{
             console.log(err);
             response.status(502).send('Status: UserExists');
         }else{
+            
             var miQuery2 = "insert into USUARIO (user,fullname, email,pwd,photo) VALUES ( " +
                             "\'"+user+"\' ,"+
                             "\'"+fullname+"\' ,"+
                             "\'"+email+"\' ,"+
                             "\'"+hash+"\', " +
-                            "\'"+photo+"\' );"
+                            "\'"+urlPhotoS3+"\' );"
                             ;
             console.log(miQuery2);
             conn.query(miQuery2, function(err, result){
@@ -66,6 +102,7 @@ appUsuario.post('/register',(request, response)=>{
                     console.log(err);
                     response.status(502).send('Status: false');
                 }else{
+                    subirfoto(request);
                     console.log(result[0]);
                     response.status(200).send('Status: true');
                 }
@@ -73,9 +110,6 @@ appUsuario.post('/register',(request, response)=>{
         }
     }); 
 })
-
-
-/**SELECT * FROM USUARIO WHERE USUARIO.user = 'mine' or USUARIO.email = 'minerva@gmail.com'; */
 
 
 // ARCHIVOS DE MI USUARIO, O ARCHIVOS SEGUN ID
@@ -115,10 +149,6 @@ appUsuario.get('/friendFiles/:idUser',(request, response)=>{
         ")aux1 ON aux.idUsuario = aux1.idUsuario "+
     "ORDER BY aux.user ASC; "
     ;
-
-    /**
-		WHERE a.private = 1  AND u.idUsuario <> 2
-	 */
 
     console.log(miQuery);
     
