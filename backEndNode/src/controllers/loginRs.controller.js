@@ -26,19 +26,10 @@ appLogin.get('/holaLogin', function (req, res ) {
 
 // peticion para log in 
 appLogin.post('/login',(request, response)=>{
-    //RECOGER DATOS
     var user = request.body.user;
     var pwd = request.body.pwd;
 
     var hash = sha256(pwd);
-
-    // ENCRIPTAR CONTRASEÑA bycript bcrypt xd
-
-    // CONSULTA A LA BASE DE DATOS VERIFICAR USUARIO
-        // SI es correcta
-            // respose.status(200).send(USUARIOCOMPLETO)
-        // NO es correcta
-            // respose.status(501).send(erro:)
 
     var miQuery = "SELECT * FROM USUARIO " +
     'WHERE ( user = ' + "\'"+user+"\' "+ 

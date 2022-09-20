@@ -75,9 +75,6 @@ appUsuario.post('/register',(request, response)=>{
 })
 
 
-/**SELECT * FROM USUARIO WHERE USUARIO.user = 'mine' or USUARIO.email = 'minerva@gmail.com'; */
-
-
 // ARCHIVOS DE MI USUARIO, O ARCHIVOS SEGUN ID
 
 appUsuario.get('/userFiles/:idUser',(request, response)=>{
@@ -115,10 +112,6 @@ appUsuario.get('/friendFiles/:idUser',(request, response)=>{
         ")aux1 ON aux.idUsuario = aux1.idUsuario "+
     "ORDER BY aux.user ASC; "
     ;
-
-    /**
-		WHERE a.private = 1  AND u.idUsuario <> 2
-	 */
 
     console.log(miQuery);
     

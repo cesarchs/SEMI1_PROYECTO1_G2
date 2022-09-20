@@ -8,11 +8,11 @@ import app from '../controllers/uploader.controller.js'
 const Router = express();
 
 //Routers 
-Router.get('/holaLogin',            appLogin) // de prueba
+Router.get('/holaLogin',              appLogin) // de prueba
 Router.get('/holaUsuario',          appUsuario) // de prueba
 Router.get('/holaArchivo',          appArchivo) // de prueba
 Router.get('/holaUpload',                  app) // de prueba
-Router.post('/login',               appLogin)
+Router.post('/login',                 appLogin)
 Router.post('/register',            appUsuario)
 Router.get('/userFiles/:idUser',    appUsuario)
 Router.get('/friendFiles/:idUser',  appUsuario)
@@ -23,6 +23,7 @@ Router.post('/uploadFile',          appArchivo)
 Router.post('/deleteFile',          appArchivo)
 Router.post('/editFile',            appArchivo)
 Router.post('/subirfoto',                  app)
+Router.post('/Prueba',                  app)
 
 export default Router
 
