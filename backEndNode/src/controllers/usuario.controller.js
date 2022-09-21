@@ -14,7 +14,7 @@ appUsuario.use(bodyParser.json());
 
 /** importar s3 peticiones */
 
-import {VerS3, holaU, getPhoto, subirfoto } from './uploader.controller.js'
+import {VerS3, holaU, getPhoto, subirfoto, subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
 
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
@@ -58,10 +58,18 @@ appUsuario.post('/getPhoto',(req, res)=>{
 })
 
 
-appUsuario.post('/subirfoto',(req)=>{
-    subirfoto(req)
+appUsuario.post('/subirfoto',(request)=>{
+    subirfoto(request)
 })
 
+
+appUsuario.post('/subirPdf',(request)=>{
+    subirArchivoPdf(request)
+})
+
+appUsuario.post('/subirtxt',(request)=>{
+    subirArchivoTxt(request)
+})
 
 
 

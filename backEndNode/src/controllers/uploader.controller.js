@@ -33,7 +33,7 @@ export function holaU (req, res ) {
 export function subirfoto (request){
 
     var id = request.body.user;
-    var foto = request.body.photo;
+    var foto = request.body.base64;
     //carpeta y nombre que quieran darle a la imagen
   
     var nombrei = "fotos/" + id + ".jpg"; // fotos -> se llama la carpeta 
@@ -60,6 +60,69 @@ export function subirfoto (request){
    // response.json({ mensaje: putResult })
 
 }
+
+export function subirArchivoPdf (request){
+
+    var id = request.body.id;
+    var file = request.body.file;
+    //carpeta y nombre que quieran darle a la imagen
+  
+    var nombrei = "pdf/" + id + ".pdf"; // fotos -> se llama la carpeta 
+    //se convierte la base64 a bytes
+    let buff = new Buffer.from(file, 'base64');
+  
+
+
+    AWS.config.update({
+        region: aws_keys.s3.region, // se coloca la region del bucket 
+        accessKeyId: aws_keys.s3.accessKeyId,
+        secretAccessKey: aws_keys.s3.secretAccessKey
+    });
+
+    var s3 = new AWS.S3(); // se crea una variable que pueda tener acceso a las caracteristicas de S3
+    // metodo 1
+    const params = {
+      Bucket: "archivos-2grupo-p1",
+      Key: nombrei,
+      Body: buff,
+      ContentType: "application/pdf"
+    };
+    const putResult = s3.putObject(params).promise();
+    //response.json({ mensaje: putResult })
+
+}
+
+export function subirArchivoTxt (request){
+
+    var id = request.body.id;
+    var file = request.body.file;
+    //carpeta y nombre que quieran darle a la imagen
+  
+    var nombrei = "txt/" + id + ".txt"; // fotos -> se llama la carpeta 
+    //se convierte la base64 a bytes
+    let buff = new Buffer.from(file, 'base64');
+  
+
+
+    AWS.config.update({
+        region: aws_keys.s3.region, // se coloca la region del bucket 
+        accessKeyId: aws_keys.s3.accessKeyId,
+        secretAccessKey: aws_keys.s3.secretAccessKey
+    });
+
+    var s3 = new AWS.S3(); // se crea una variable que pueda tener acceso a las caracteristicas de S3
+    // metodo 1
+    const params = {
+      Bucket: "archivos-2grupo-p1",
+      Key: nombrei,
+      Body: buff,
+      ContentType: "file"
+    };
+    const putResult = s3.putObject(params).promise();
+    //response.json({ mensaje: putResult })
+
+}
+
 
 
 
