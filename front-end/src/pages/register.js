@@ -20,21 +20,13 @@ export class Register extends React.Component{
 
     getBase64 = file => {
         return new Promise(resolve => {
-          let fileInfo;
           let baseURL = "";
-          // Make new FileReader
           let reader = new FileReader();
-          // Convert the file to base64 text
-          reader.readAsDataURL(file);
-          // on reader load somthing...
+          reader.readAsDataURL(file); 
           reader.onload = () => {
-            // Make a fileInfo Object
-            // console.log("Called", reader);
             baseURL = reader.result;
-            //console.log(baseURL);
             resolve(baseURL);
           };
-          console.log(fileInfo);
         });
       };
 
@@ -50,8 +42,7 @@ export class Register extends React.Component{
             this.getBase64(value).then(result => {
                 file["base64"] = result;
                 this.setState({
-                base64: result,
-                file: file
+                    base64: result
                 });
             })
             .catch(err => {
@@ -63,25 +54,34 @@ export class Register extends React.Component{
     submit(event){
         event.preventDefault(); 
         let url = "http://localhost:5000/apiUsuarioN/register";
-        let data = this.state;
-        let status = 0;
-        console.log(data)
-        fetch(url, {
-            method:'POST',
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            },
-            body:JSON.stringify(data)
-        }).then((result)=>{
-            status = result.status;
-            if(status === 200){
-                alert("Usuario registrado con éxito!")
-                window.location.href = "./login"
-            }else{
-                alert("Error en la creación del usuario!")
-            }
-        });
-
+        if(this.state.pwd !== this.state.pwd2){
+            alert("Contraseña no coiciden!")
+        }else{
+            let data ={
+                user: this.state.user,
+                fullname: this.state.fullname,
+                email: this.state.email,
+                pwd:this.state.pwd,
+                base64: this.state.base64,
+            };
+            let status = 0;
+            // console.log(data)
+            fetch(url, {
+                method:'POST',
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body:JSON.stringify(data)
+            }).then((result)=>{
+                status = result.status;
+                if(status === 200){
+                    alert("Usuario registrado con éxito!")
+                    window.location.href = "./login"
+                }else{
+                    alert("Error en la creación del usuario!")
+                }
+            });    
+        }
     } 
 
     render(){

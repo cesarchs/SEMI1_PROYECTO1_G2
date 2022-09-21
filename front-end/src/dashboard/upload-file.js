@@ -17,21 +17,15 @@ export class UploadFile extends React.Component{
 
     getBase64 = file => {
         return new Promise(resolve => {
-          let fileInfo;
           let baseURL = "";
-          // Make new FileReader
           let reader = new FileReader();
-          // Convert the file to base64 text
           reader.readAsDataURL(file);
-          // on reader load somthing...
           reader.onload = () => {
-            // Make a fileInfo Object
-            // console.log("Called", reader);
             baseURL = reader.result;
-            console.log(baseURL);
+            // console.log(baseURL);
             resolve(baseURL);
           };
-          console.log(fileInfo);
+        //   console.log(fileInfo);
         });
     };
 
@@ -63,9 +57,19 @@ export class UploadFile extends React.Component{
     submit(event){
         event.preventDefault(); 
         let url = "http://localhost:5000/apiUsuarioN/uploadFile";
+        // text/plain
+        // application/pdf
+        // image/png
+        let fileType = "";
+        if(this.state.file.type.includes("text"))
+            fileType = "txt";
+        if(this.state.file.type.includes("pdf"))
+            fileType = "pdf";
+        if(this.state.file.type.includes("image"))
+            fileType = "img";
         let data = {
             idUsuario: localStorage.getItem("idUsuario"),
-            tipoArchivo: this.state.file.type,
+            tipoArchivo: fileType,
             file_name: this.state.fileName,
             base64: this.state.base64,
             private: this.state.private,
