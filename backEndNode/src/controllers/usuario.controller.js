@@ -23,8 +23,7 @@ import sha256 from 'js-sha256' // libreria para emcriptar
 /** VARIABLES DE NOMBRE DE TIPO DE ARCHIVOS CARGADOS A S3 */
 
 const imageS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/fotos/";
-const txtS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/txt/";
-const pdfS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/pdf/";
+
 
 /**
  * El encabezado de respuesta Access-Control-Allow-Origin 
