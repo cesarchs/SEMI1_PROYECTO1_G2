@@ -14,7 +14,7 @@ appUsuario.use(bodyParser.json());
 
 /** importar s3 peticiones */
 
-import {VerS3, holaU, getPhoto, subirfoto } from './uploader.controller.js'
+import {VerS3, holaU, getPhoto, subirfoto, subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
 
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
@@ -23,8 +23,7 @@ import sha256 from 'js-sha256' // libreria para emcriptar
 /** VARIABLES DE NOMBRE DE TIPO DE ARCHIVOS CARGADOS A S3 */
 
 const imageS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/fotos/";
-const txtS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/txt/";
-const pdfS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/pdf/";
+
 
 /**
  * El encabezado de respuesta Access-Control-Allow-Origin 
@@ -58,10 +57,18 @@ appUsuario.post('/getPhoto',(req, res)=>{
 })
 
 
-appUsuario.post('/subirfoto',(req)=>{
-    subirfoto(req)
+appUsuario.post('/subirfoto',(request)=>{
+    subirfoto(request)
 })
 
+
+appUsuario.post('/subirPdf',(request)=>{
+    subirArchivoPdf(request)
+})
+
+appUsuario.post('/subirtxt',(request)=>{
+    subirArchivoTxt(request)
+})
 
 
 

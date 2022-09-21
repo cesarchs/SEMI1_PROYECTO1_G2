@@ -26,7 +26,8 @@ Router.post('/uploadFile',          appArchivo)
 Router.post('/deleteFile',          appArchivo)
 Router.post('/editFile',            appArchivo)
 
-
+Router.post('/subirPdf',            appUsuario)
+Router.post('/subirtxt',            appUsuario)
 
 
 export default Router
