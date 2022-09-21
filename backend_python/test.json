@@ -1,0 +1,16 @@
+{
+    "user":"userTest2",
+	"fullname":"Daniel Monterroso",
+    "email": "cdanym2@gmail.com",
+    "pwd":"1234"
+}
+
+{
+    "userOrEmail":"userTest2",
+    "pwd":"1234"
+}
+
+{
+    "id_user": 00,
+    "id_friend": 00,
+}
