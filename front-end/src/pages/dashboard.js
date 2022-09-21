@@ -47,7 +47,7 @@ export function Dashboard(){
                     </div>
                 </div>
                 {/* CONTENT */}
-                <div className="col-lg-9" >
+                <div className="col-lg-9">
                     <div className="container bg-light shadow p-4 fh">
                         {/* MY FILES */}
                         <div key={1} className={toggleState === 1 ? "show-active" : "d-none"}>

@@ -26,23 +26,23 @@ export class Friends extends React.Component{
     }
 
     componentWillMount() {
-        // let url = "http://localhost:5000/apiUsuarioN/myFriends/"+ localStorage.getItem("idUsuario");
+        let url = "http://localhost:5000/apiUsuarioN/myFriends/"+ localStorage.getItem("idUsuario");
         let status = 0;
-        // fetch(url, {
-        //     method:'GET',
-        //     headers: {
-        //         "Content-type": "application/json; charset=UTF-8"
-        //     }
-        // }).then((result)=>{
-        //     status = result.status;
-        //     if(status === 200){
-        //         result.json().then((res)=>{
-        //             this.setState({ myFriends: res })
-        //         })
-        //     }else{
-        //         alert("Error en la petición!")
-        //     }
-        // });
+        fetch(url, {
+            method:'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then((result)=>{
+            status = result.status;
+            if(status === 200){
+                result.json().then((res)=>{
+                    this.setState({ myFriends: res })
+                })
+            }else{
+                alert("Error en la petición!")
+            }
+        });
         
         let url2="http://localhost:5000/apiUsuarioN/allUsers/" + localStorage.getItem("idUsuario");
         fetch(url2, {
@@ -54,7 +54,7 @@ export class Friends extends React.Component{
             status = result.status;
             if(status === 200){
                 result.json().then((res)=>{
-                    this.setState({ users: res})
+                    this.setState({ users: res, filteredUsers: res})
                 })
             }else{
                 alert("Error en la petición!")
@@ -82,7 +82,7 @@ export class Friends extends React.Component{
 
     render(){
         const { myFriends} = this.state;
-        const { users } = this.state;
+        const { filteredUsers } = this.state;
         
         return(
             <div className="container">
@@ -106,35 +106,41 @@ export class Friends extends React.Component{
                 <div className="mb-3">
                     <form onSubmit={this.search}>
                         <div className="row">
-                                <div className="col-10">
-                                    <input name="search" className="form-control" type="text" placeholder="Nombre del Usuario"  onChange={this.inputChangeHandler}/>
-                                </div>
-                                <div className="col-2">
-                                    <button className="btn btn-danger" type="submit">Buscar</button>
-                                </div>
+                            <div className="col-10">
+                                <input name="search" className="form-control" type="text" placeholder="Nombre del Usuario"  onChange={this.inputChangeHandler}/>
+                            </div>
+                            <div className="col-2">
+                                <button className="btn btn-danger" type="submit">Buscar</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             }
 
             {
-                myFriends && this.state.tab === 1 && myFriends.map( (obj, i) => {
+                myFriends && this.state.tab === 1 && 
+                <div className="row"> {
+                    myFriends.map( (obj, i) => {
                     return( <User 
                                 key={i}
                                 url={obj.photo}
                                 id={obj.idUsuario}
                                 userName={obj.user}
+                                fullname={obj.fullname}
+                                email={obj.email}
                                 publicFiles={obj.ArchivosPublicos}
+                                aggregable={false}
                             />
                         )
-                })
+                    })
+                }</div>
             }
 
             {/* ARCHIVOS CON FILTRO DE BUSQUEDA */}
             {
-                users && this.state.tab === 2 && 
+                filteredUsers && this.state.tab === 2 && 
                 <div className="row"> {
-                    users.map( (obj, i) => {
+                    filteredUsers.map( (obj, i) => {
                     return( <User 
                                 key={i}
                                 url={obj.photo}

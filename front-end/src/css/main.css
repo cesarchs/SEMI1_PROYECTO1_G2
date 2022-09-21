@@ -75,3 +75,11 @@ body{
   background-color: #dde0e3;
   cursor: pointer;
 }
+
+.paragraph{
+  word-wrap: break-word;
+}
+
+.overflow{
+  overflow-y: scroll;
+}

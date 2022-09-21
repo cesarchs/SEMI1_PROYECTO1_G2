@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-
+// import base64 from 'react-native-base64'
 
 export class Register extends React.Component{
     constructor(props){
@@ -11,20 +11,55 @@ export class Register extends React.Component{
             email:"",
             pwd:"",
             pwd2:"",
-            photo:""
+            file:"",
+            base64: "",
         }
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.submit = this.submit.bind(this);
     } 
+
+    getBase64 = file => {
+        return new Promise(resolve => {
+          let fileInfo;
+          let baseURL = "";
+          // Make new FileReader
+          let reader = new FileReader();
+          // Convert the file to base64 text
+          reader.readAsDataURL(file);
+          // on reader load somthing...
+          reader.onload = () => {
+            // Make a fileInfo Object
+            // console.log("Called", reader);
+            baseURL = reader.result;
+            //console.log(baseURL);
+            resolve(baseURL);
+          };
+          console.log(fileInfo);
+        });
+      };
+
     inputChangeHandler(event){
-        const target = event.target;
-        var value = target.name === "photo" ? target.files[0] : target.value;
+        const target = event.target; 
+        var value = target.name === "file" ? target.files[0] : target.value;
         const name = target.name;
         this.setState({
             [name]: value
         });
+        if(target.name === "file"){
+            let file = value;
+            this.getBase64(value).then(result => {
+                file["base64"] = result;
+                this.setState({
+                base64: result,
+                file: file
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        } 
     }
-    
+
     submit(event){
         event.preventDefault(); 
         let url = "http://localhost:5000/apiUsuarioN/register";
@@ -75,7 +110,7 @@ export class Register extends React.Component{
                             <div className="form-group mt-3">
                                 <div className="input-group custom-file-button">
                                     <label className="input-group-text" htmlFor="inputGroupFile">Foto de Perfil</label>
-                                    <input name="photo" type="file" accept="image/*" className="form-control" id="inputGroupFile" onChange={this.inputChangeHandler} required/>
+                                    <input name="file" type="file" accept="image/*" className="form-control" id="inputGroupFile" onChange={this.inputChangeHandler} required/>
                                 </div>
                             </div>
                             <div className="row justify-content-center align-items-center mt-4">

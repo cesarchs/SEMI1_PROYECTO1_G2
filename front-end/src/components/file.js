@@ -11,7 +11,7 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
     const handleCheck= (e) =>{
         setInputPrivate(e.target.checked);
     }
-
+    let fixedName = fileName.length > 23 ? fileName.substring(0,26)+"..." : fileName
     //EDITAR ARCHIVO
     const handleClick = () => {
         let url = "http://localhost:5000/apiUsuarioN/editFile";
@@ -92,7 +92,7 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
                 <div className="row">
                     <div className="col-4">
                         {icon}
-                        {fileName}
+                        {fixedName}
                     </div>
                     <div className="col-2 text-center">
                         <small className="text-secondary">{owner}</small>

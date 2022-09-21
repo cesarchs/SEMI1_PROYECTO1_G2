@@ -5,26 +5,72 @@ export class UploadFile extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-
+            fileName:"",
+            private:false,
+            file:"",
+            base64:"",
+            pwd:""
         }
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.submit = this.submit.bind(this);
     }
 
+    getBase64 = file => {
+        return new Promise(resolve => {
+          let fileInfo;
+          let baseURL = "";
+          // Make new FileReader
+          let reader = new FileReader();
+          // Convert the file to base64 text
+          reader.readAsDataURL(file);
+          // on reader load somthing...
+          reader.onload = () => {
+            // Make a fileInfo Object
+            // console.log("Called", reader);
+            baseURL = reader.result;
+            console.log(baseURL);
+            resolve(baseURL);
+          };
+          console.log(fileInfo);
+        });
+    };
+
     inputChangeHandler(event){
         const target = event.target;
-        var value = target.value;
+        var value = target.name === "file" ? target.files[0] :
+                    target.name === "private" ? event.target.checked : target.value;
         const name = target.name;   
         this.setState({
             [name]: value
         });
+
+        if(target.name === "file"){
+            let file = value;
+            this.getBase64(value).then(result => {
+                file["base64"] = result;
+                this.setState({
+                base64: result,
+                file: file
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        } 
     }
 
 
     submit(event){
         event.preventDefault(); 
-        let url = "http://localhost:5000/apiUsuarioN/login";
-        let data = this.state;
+        let url = "http://localhost:5000/apiUsuarioN/uploadFile";
+        let data = {
+            idUsuario: localStorage.getItem("idUsuario"),
+            tipoArchivo: this.state.file.type,
+            file_name: this.state.fileName,
+            base64: this.state.base64,
+            private: this.state.private,
+            pwd: this.state.pwd
+        };
         let status = 0;
         fetch(url, {
             method:'POST',
@@ -35,14 +81,13 @@ export class UploadFile extends React.Component{
         }).then((result)=>{
             status = result.status;
             if(status === 200){
-                result.json().then((res)=>{
-                    window.location.href = "./dashboard"
+                result.json().then((res)=>{ 
+                    alert("Archivo subido con éxito!");
                 })
             }else{
-                alert("Usuario o Contraseña incorrectos!")
+                alert("Error al subir el archivo!")
             }
         });
-
     } 
 
     render(){
@@ -57,10 +102,25 @@ export class UploadFile extends React.Component{
                 <div className="container">
                     <form onSubmit={this.submit}>
                         <div className="form-group mt-3">
-                            <input name="user" type="text" className="form-control" placeholder="Nombre de Usuario o Correo" onChange={this.inputChangeHandler}/>
+                            Nombre del Archivo:
+                            <input name="fileName" type="text" className="form-control" placeholder="Nombre del archivo" onChange={this.inputChangeHandler}/>
+                        </div>
+                        <div className="form-group mt-3">                                        
+                            Archivo Privado:
+                            <div className="form-check form-switch form-switch-md">
+                                <input name="private" className="form-check-input" type="checkbox" onChange={this.inputChangeHandler}></input>
+                            </div>
                         </div>
                         <div className="form-group mt-3">
+                            Contraseña:
                             <input name="pwd" type="password" className="form-control" placeholder="Contraseña" onChange={this.inputChangeHandler}/>
+                        </div>
+                        <div className="form-group mt-3">
+                            Subir Archivo(Imagen, .pdf o .txt):
+                            <div className="input-group custom-file-button">
+                                <label className="input-group-text" htmlFor="inputGroupFile">Subir Archivo</label>
+                                <input name="file" type="file" accept="application/pdf, .txt, image/*" className="form-control" id="inputGroupFile" onChange={this.inputChangeHandler} required/>
+                            </div>
                         </div>
                         <div className="row justify-content-center align-items-center mt-4">
                             <div className="col-5 p-2">
@@ -69,8 +129,6 @@ export class UploadFile extends React.Component{
                         </div>
                     </form> 
                 </div>
-    
-    
             </div>
         );
     }

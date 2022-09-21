@@ -1,12 +1,18 @@
 import React from "react";
 
-export function User({id, url, userName, publicFiles, aggregable}){
+export function User({id, url, userName, publicFiles, fullname, email, aggregable}){
     
+
     //AGREGAR AMIGO
     const handleClick = () => {
-        let url = "http://localhost:5000/apiUsuarioN/editFile";
+        // {
+        //     "id_user":"12",
+        //     "id_friend":"12"
+        // }
+        let url = "http://localhost:5000/apiUsuarioN/addFriend";
         let data = {
-            idUsuario: localStorage.getItem("idUsuario")
+            id_user: localStorage.getItem("idUsuario"),
+            id_friend: id
         };
         console.log(data)
         let status = 0;
@@ -19,9 +25,9 @@ export function User({id, url, userName, publicFiles, aggregable}){
         }).then((result)=>{
             status = result.status;
             if(status === 200){
-                alert("Archivo modificado con éxito!")
+                alert("Amigo agregado con éxito!")
             }else{
-                alert("Error al modificar el archivo!")
+                alert("Error al agregar el amigo")
             }
             window.location.reload(false);
         });
@@ -31,13 +37,15 @@ export function User({id, url, userName, publicFiles, aggregable}){
     return( 
         <div className="col-6 p-2">
             {/* TITULO */}
-            <div className="row border rounded m-2 bg-white">
+            <div className="row border rounded m-1 bg-white">
                 <div className="col-6 p-2">
-                    <img src={url} width="150px" height="150px" alt=""/>
+                    <img src={url} width="150px" height="170px" alt=""/>
                 </div>
-                <div className="col-6 p-2">
-                    <p>Nombre de Usuario: <h6 className="text-danger">{userName}</h6></p>
-                    <p>Archivos Públicos: <h6 className="text-danger">{publicFiles}</h6></p>
+                <div className="col-6 p-2 ">
+                    <p>Nombre de Usuario: <strong className="text-danger">{userName}</strong></p>
+                    { !aggregable &&<p>Nombre: <strong className="text-danger">{fullname}</strong></p>}
+                    { !aggregable &&<p>Correo: <strong className="text-danger paragraph">{email}</strong></p>}
+                    { aggregable && <p>Archivos Públicos: <strong className="text-danger">{publicFiles}</strong></p>}
                     { aggregable && <span role="button" className="btn btn-sm btn-outline-danger" onClick={handleClick}>Agregar Amigo</span> }
                 </div>
             </div>
