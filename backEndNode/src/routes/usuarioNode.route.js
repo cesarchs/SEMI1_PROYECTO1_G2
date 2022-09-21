@@ -3,7 +3,6 @@ import express from 'express'
 import appUsuario from '../controllers/usuario.controller.js'
 import appLogin from '../controllers/loginRs.controller.js'
 import appArchivo from '../controllers/archivo.controller.js'
-import app from '../controllers/uploader.controller.js'
 
 const Router = express();
 

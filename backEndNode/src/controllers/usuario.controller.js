@@ -3,10 +3,24 @@ import db_credentials from '../db/db_creds.js' //Se importa las credenciales de 
 import mysql from 'mysql' // IMPORTAMOS MYSQL
 var conn = mysql.createPool(db_credentials); // CREAMOS UN POOL PARA LAS PETICIONES A LA BASE DE DATOS 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+import { v4 as uuidv4 } from 'uuid';
 import express from 'express'
 const appUsuario = express() // creamos instancia de express para exportar al .router
-import bodyParser from 'body-parser'
-appUsuario.use(bodyParser.json());
+//import bodyParser from 'body-parser'
+//import cors from 'cors'
+
+
+// para extender el tamanio aceptado del string que entra en el body
+// var corsOptions = { origin: true, optionsSuccessStatus: 200 };
+// appUsuario.use(cors(corsOptions));
+// appUsuario.use(bodyParser.json({ limit: '10mb', extended: true }));
+// //appUsuario.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
+
+// appUsuario.use(bodyParser.urlencoded({
+//     limit: '50mb',
+//     extended: true,
+//     parameterLimit:50000
+//   }));
 /**
  * Básicamente, lo que body-parser es lo que permite a Express leer el cuerpo 
  * y luego analizarlo en un objeto Json que podamos entender
@@ -79,8 +93,8 @@ appUsuario.post('/register',(request, response)=>{
     var email = request.body.email;
     var pwd = request.body.pwd;
 
-    
-    var urlPhotoS3 = imageS3+user+".jpg" ;
+    var uniqueId = uuidv4();
+    var urlPhotoS3 = imageS3+uniqueId+".jpg" ;
 
     var hash = sha256(pwd);
 
@@ -109,7 +123,7 @@ appUsuario.post('/register',(request, response)=>{
                     console.log(err);
                     response.status(502).send('Status: false');
                 }else{
-                    subirfoto(request);
+                    subirfoto(request,uniqueId);
                     console.log(result[0]);
                     response.status(200).send('Status: true');
                 }
