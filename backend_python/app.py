@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import pymysql
 import mysql.connector
 import hashlib
+from flask_cors import CORS
 
 '''conexion = mysql.connector.connect(
     host = '127.0.0.1',
@@ -22,6 +23,7 @@ conexion = mysql.connector.connect(
 print("conexion aws: " + str(conexion))
 
 app = Flask(__name__)
+CORS(app)
 
 imageS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/fotos/"
 
