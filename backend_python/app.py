@@ -54,7 +54,7 @@ def allFriends():
 def login():
     try:
         userLogin = None
-        userOrEmail = request.json['userOrEmail']
+        userOrEmail = request.json['user']
         pwd = request.json['pwd']
         pwdHash = hashlib.sha256(pwd.encode('utf-8')).hexdigest()
         Mensaje = ("Usuario a logear: " + str(userOrEmail) + ", " + str(pwdHash))
@@ -70,10 +70,10 @@ def login():
         conexion.close()
         #return userLogin
         respuesta = {
-            "idUser" : userLogin[0][0],
+            "idUsuario" : userLogin[0][0],
             "user" : userLogin[0][1],
             "email" : userLogin[0][3],
-            "pw" : userLogin[0][4],
+            "pwd" : userLogin[0][4],
             "fullname" : userLogin[0][2],
             "photo" : userLogin[0][5]
         }
