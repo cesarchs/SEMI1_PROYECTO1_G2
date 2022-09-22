@@ -5,7 +5,7 @@ var conn = mysql.createPool(db_credentials); // CREAMOS UN POOL PARA LAS PETICIO
 //////////////////////////////////////////////////////////////////////////////////////////////////
 import express from 'express'
 const appLogin = express() // creamos instancia de express para exportar al .router
-//import bodyParser from 'body-parser'
+import bodyParser from 'body-parser'
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
 import { v4 as uuidv4 } from 'uuid'; // identificador unico
@@ -21,19 +21,8 @@ const txtS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/txt/";
 const pdfS3 = "https://archivos-2grupo-p1.s3.amazonaws.com/pdf/";
 
 // ########################################################################
-//import cors from 'cors'
+appLogin.use(bodyParser.json());
 
-
-// para extender el tamanio aceptado del string que entra en el body
-// var corsOptions = { origin: true, optionsSuccessStatus: 200 };
-// appLogin.use(cors(corsOptions));
-// appLogin.use(bodyParser.json({ limit: '10mb', extended: true }));
-// //appLogin.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
-// appLogin.use(bodyParser.urlencoded({
-//     limit: '50mb',
-//     extended: true,
-//     parameterLimit:50000
-//   }));
 
 appLogin.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

@@ -6,41 +6,29 @@ const s3 = new AWS.S3(aws_keys.s3);  //--------> Alamacenamiento S3
 //////////////////////////////////////////////////////////////////////////////////////////////////
 import express from 'express'
 const app = express() 
-// import bodyParser from 'body-parser'
-// import cors from 'cors'
+import bodyParser from 'body-parser'
+import cors from 'cors'
 
 
-// // para extender el tamanio aceptado del string que entra en el body
-// var corsOptions = { origin: true, optionsSuccessStatus: 200 };
-// app.use(cors(corsOptions));
-// app.use(bodyParser.json({ limit: '25mb', extended: true }));
-// app.use(bodyParser.urlencoded({ limit: '25mb', extended: true }))
+// para extender el tamanio aceptado del string que entra en el body
+var corsOptions = { origin: true, optionsSuccessStatus: 200 };
+app.use(cors(corsOptions));
+app.use(bodyParser.json({ limit: '25mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '25mb', extended: true }))
 
 
 //////////////////////////////////////////////////////////////////////////////////
 // /////////////////////////// FUNCIONES PARA S3  ////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
-/**
- *  // todas las funciones podian ser peticiones si se haria desde aca la peticion
- *app.get('/holaUpload', function (req, res ) {
-	res.json({messaje: 'Hola desde controlador de upload'})
-});
-*/
+
 export function holaU (req, res ) {
 	res.json({messaje: 'Hola desde controlador de upload 2'})
 }
 
-export function subirfoto (request,uniqueId){
+export function subirfoto (request,uniqueId, format,extension){
+    var foto = request.body.base64; 
+    var nombrei = "fotos/" + uniqueId +extension ; 
 
-   var uniqueId = "hola1234567"
-    var foto = request.body.base64;
-    const format = foto.substring(foto.indexOf('data:')+5, foto.indexOf(';base64'));
-    //carpeta y nombre que quieran darle a la imagen
-  
-    var nombrei = "fotos/" + uniqueId + "." +format.split("/")[1]; // fotos -> se llama la carpeta 
-    //se convierte la base64 a bytes
-    console.log (nombrei);
-    console.log( format);
     let buff = new Buffer.from(foto.split(";base64,")[1], 'base64');
     console.log(buff)
 
@@ -126,12 +114,6 @@ export function subirArchivoTxt (request, uniqueId){
 }
 
 
-
-
-
-
-
-
 export function getPhoto (req, res) {
     var id = req.body.id;
     var nombrei = "fotos/"+id+".jpg";
@@ -166,9 +148,6 @@ export function getPhoto (req, res) {
 }
 
 
-
-
-
 export function VerS3 (req, res) {
 
     AWS.config.update({
@@ -197,9 +176,6 @@ export function VerS3 (req, res) {
     })
 
 }
-
-
-
 
 
 
