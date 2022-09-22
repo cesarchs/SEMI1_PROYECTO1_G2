@@ -15,7 +15,7 @@ appUsuario.use(bodyParser.json());
 
 /** importar s3 peticiones */
 
-import {VerS3, holaU, getPhoto, subirfoto, subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
+import { subirfotoPerfil} from './uploader.controller.js'
 
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
@@ -42,35 +42,6 @@ appUsuario.use(function(req, res, next) {
 appUsuario.get('/holaUsuario', function (req, res ) {
 	res.json({messaje: 'Hola desde controlador usuario'})
 });
-
-appUsuario.get('/holaU', function (req, res ) {
-	holaU(req,res)
-});
-
-
-appUsuario.get('/allPhotos',(req, res)=>{
-    VerS3(req, res)
-})
-
-
-appUsuario.post('/getPhoto',(req, res)=>{
-    getPhoto(req, res)
-})
-
-
-appUsuario.post('/subirfoto',(request)=>{
-    subirfoto(request)
-})
-
-
-appUsuario.post('/subirPdf',(request)=>{
-    subirArchivoPdf(request)
-})
-
-appUsuario.post('/subirtxt',(request)=>{
-    subirArchivoTxt(request)
-})
-
 
 
 // REGISTRAR USUARIO
@@ -115,7 +86,7 @@ appUsuario.post('/register',(request, response)=>{
                     console.log(err);
                     response.status(502).send('Status: false');
                 }else{
-                    subirfoto(request,uniqueId,format,extension);
+                    subirfotoPerfil(request,uniqueId,format,extension);
                     console.log(result[0]);
                     response.status(200).send('Status: true');
                 }
