@@ -30,6 +30,7 @@ Router.post('/subirtxt',            appArchivo)
 Router.get('/allFile',            appArchivo)
 Router.post('/getPhoto',            appArchivo)
 Router.post('/subirfoto',           appArchivo)
+Router.post('/deleteFilee',           appArchivo)
 
 
 export default Router

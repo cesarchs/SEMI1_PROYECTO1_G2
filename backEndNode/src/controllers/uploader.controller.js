@@ -171,6 +171,39 @@ export function VerS3 (req, res) {
 
 
 
+export function eliminarfotoS3 (url){
+
+    let nombrei;
+    
+    if (url.split("fotos/")[1] != undefined){
+        nombrei = "fotos/"+ url.split("fotos/")[1];
+    } else if (url.split("txt/")[1] != undefined){
+        nombrei = "txt/"+ url.split("txt/")[1];
+    } else if (url.split("pdf/")[1] != undefined){
+        nombrei = "pdf/"+ url.split("pdf/")[1];
+    }
+    console.log(nombrei);
+
+
+
+    AWS.config.update({
+        region: aws_keys.s3.region, // se coloca la region del bucket 
+        accessKeyId: aws_keys.s3.accessKeyId,
+        secretAccessKey: aws_keys.s3.secretAccessKey
+    });
+
+    var s3 = new AWS.S3(); // se crea una variable que pueda tener acceso a las caracteristicas de S3
+    // metodo 1
+    const params = {
+      Bucket: "archivos-2grupo-p1",
+      Key: nombrei
+    };
+    const putResult = s3.deleteObject(params).promise();
+   //response.json({ mensaje: putResult })
+
+}
+
+
 
 export default app
 

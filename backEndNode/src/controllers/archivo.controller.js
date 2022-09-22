@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid'; // identificador unico
 
 /** importar s3 peticiones */
 
-import {subirfotoS3, subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
+import {eliminarfotoS3,subirfotoS3, subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
 
 /** VARIABLES DE NOMBRE DE TIPO DE ARCHIVOS CARGADOS A S3 */
 
@@ -157,8 +157,8 @@ appArchivo.post('/deleteFile',(request, response)=>{
     //RECOGER DATOS
     var idUsuario = request.body.idUsuario;
     var id_file = request.body.id_file;
-    var file_name = request.body.file_name;
     var pwd = request.body.pwd;
+    var url;
 
     var hash = sha256(pwd);
 
@@ -177,14 +177,29 @@ appArchivo.post('/deleteFile',(request, response)=>{
             " AND propietario = "+ 
             idUsuario 
             ;
-            console.log(miQuery2);
-            conn.query(miQuery2, function(err, result){
+            var miQuery3 = "SELECT URL FROM ARCHIVO WHERE idArchivo = " +
+            id_file+ 
+            " AND propietario = "+ 
+            idUsuario 
+            ;
+            console.log(miQuery3);
+            conn.query(miQuery3, function(err, result){
                 if(err){
                     console.log(err);
                     response.status(502).send('Status: false');
-                }else{
-                    console.log(result[0]);
-                    response.status(200).send('Status: true');
+                }else {
+                    url = result[0].URL;
+                    console.log(url);
+                    conn.query(miQuery2, function(err, result){
+                        if(err){
+                            console.log(err);
+                            console.log("no se elimino");
+                            response.status(502).send('Status: false');
+                        }else{
+                            eliminarfotoS3(url);
+                            response.status(200).send('Status: true');
+                        }
+                    });
                 }
             });
         }
@@ -237,6 +252,13 @@ appArchivo.post('/editFile',(request, response)=>{
     });     
 })
 
+
+
+
+
+appArchivo.post('/deleteFilee',(request, response)=>{
+    eliminarfotoS3(request, response)
+})
 
 
 export default appArchivo
