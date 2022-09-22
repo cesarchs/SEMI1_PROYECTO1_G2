@@ -107,7 +107,7 @@ appUsuario.get('/userFiles/:idUser',(request, response)=>{
     conn.query(miQuery, function(err, result){
         if(err || result[0] == undefined){
             console.log(err);
-            response.status(502).send('Status: false');
+            response.status(200).json([]);//se cambio ya no retorna un error por que asi lo controlan en el front (bugfix)
         }else{
             console.log(result);
             response.status(200).send(result);
@@ -139,7 +139,7 @@ appUsuario.get('/friendFiles/:idUser',(request, response)=>{
     conn.query(miQuery, function(err, result){
         if(err || result[0] == undefined){
             console.log(err);
-            response.status(502).send('Status: false');
+            response.status(200).json([]); //se cambio ya no retorna un error por que asi lo controlan en el front
         }else{
             console.log(result);
             response.status(200).send(result);
