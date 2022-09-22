@@ -61,7 +61,6 @@ export function subirArchivoPdf (request, uniqueId, format, extension){
     console.log(buff)
   
 
-
     AWS.config.update({
         region: aws_keys.s3.region,  
         accessKeyId: aws_keys.s3.accessKeyId,
@@ -79,16 +78,14 @@ export function subirArchivoPdf (request, uniqueId, format, extension){
 
 }
 
-export function subirArchivoTxt (request, uniqueId){
+export function subirArchivoTxt (request,uniqueId, format,extension){
+    var foto = request.body.base64; 
+    var nombrei = "txt/" + uniqueId +extension ; 
 
-    var file = request.body.base64;
-    //carpeta y nombre que quieran darle a la imagen
-  
-    var nombrei = "txt/" + uniqueId + ".txt"; // fotos -> se llama la carpeta 
     //se convierte la base64 a bytes
-    let buff = new Buffer.from(file, 'base64');
+    let buff = new Buffer.from(foto.split(";base64,")[1], 'base64');
+    console.log(buff)
   
-
 
     AWS.config.update({
         region: aws_keys.s3.region, // se coloca la region del bucket 
@@ -102,10 +99,9 @@ export function subirArchivoTxt (request, uniqueId){
       Bucket: "archivos-2grupo-p1",
       Key: nombrei,
       Body: buff,
-      ContentType: "file"
+      ContentType: format
     };
     const putResult = s3.putObject(params).promise();
-    //response.json({ mensaje: putResult })
 
 }
 

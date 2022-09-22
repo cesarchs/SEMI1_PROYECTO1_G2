@@ -88,7 +88,8 @@ appArchivo.post('/uploadFile',(request, response)=>{
 
     console.log(format);
     console.log(extension);
-   /*
+   
+    
     var urlS3;
     
     var miQuery = "SELECT * FROM USUARIO " +
@@ -137,17 +138,16 @@ appArchivo.post('/uploadFile',(request, response)=>{
                 response.status(200).send('Status: true');
                 
             }else if (tipoArchivo =="pdf"){
-                subirArchivoPdf(request,uniqueId)
+                subirArchivoPdf(request, uniqueId, format, extension)
                 console.log(result[0]);
                 response.status(200).send('Status: true');
             }else {
-                subirArchivoTxt(request,uniqueId)
+                subirArchivoTxt(request, uniqueId, format, extension)
                 console.log(result[0]);
                 response.status(200).send('Status: true');
             }
         });
-    });  
-*/   
+    });   
 })
 
 
