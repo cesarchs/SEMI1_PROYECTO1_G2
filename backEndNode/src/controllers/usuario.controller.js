@@ -3,6 +3,7 @@ import db_credentials from '../db/db_creds.js' //Se importa las credenciales de 
 import mysql from 'mysql' // IMPORTAMOS MYSQL
 var conn = mysql.createPool(db_credentials); // CREAMOS UN POOL PARA LAS PETICIONES A LA BASE DE DATOS 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+import { v4 as uuidv4 } from 'uuid';
 import express from 'express'
 const appUsuario = express() // creamos instancia de express para exportar al .router
 import bodyParser from 'body-parser'
@@ -14,7 +15,7 @@ appUsuario.use(bodyParser.json());
 
 /** importar s3 peticiones */
 
-import {VerS3, holaU, getPhoto, subirfoto, subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
+import { subirfotoS3 } from './uploader.controller.js'
 
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
@@ -42,35 +43,6 @@ appUsuario.get('/holaUsuario', function (req, res ) {
 	res.json({messaje: 'Hola desde controlador usuario'})
 });
 
-appUsuario.get('/holaU', function (req, res ) {
-	holaU(req,res)
-});
-
-
-appUsuario.get('/allPhotos',(req, res)=>{
-    VerS3(req, res)
-})
-
-
-appUsuario.post('/getPhoto',(req, res)=>{
-    getPhoto(req, res)
-})
-
-
-appUsuario.post('/subirfoto',(request)=>{
-    subirfoto(request)
-})
-
-
-appUsuario.post('/subirPdf',(request)=>{
-    subirArchivoPdf(request)
-})
-
-appUsuario.post('/subirtxt',(request)=>{
-    subirArchivoTxt(request)
-})
-
-
 
 // REGISTRAR USUARIO
 appUsuario.post('/register',(request, response)=>{
@@ -78,9 +50,14 @@ appUsuario.post('/register',(request, response)=>{
     var fullname = request.body.fullname;
     var email = request.body.email;
     var pwd = request.body.pwd;
+    var foto = request.body.base64;
 
+    var uniqueId = uuidv4();
+
+    const format = foto.substring(foto.indexOf('data:')+5, foto.indexOf(';base64'));
+    var extension = "." +format.split("/")[1];
+    var urlPhotoS3 = imageS3+uniqueId+ extension ;
     
-    var urlPhotoS3 = imageS3+user+".jpg" ;
 
     var hash = sha256(pwd);
 
@@ -109,7 +86,7 @@ appUsuario.post('/register',(request, response)=>{
                     console.log(err);
                     response.status(502).send('Status: false');
                 }else{
-                    subirfoto(request);
+                    subirfotoS3(request,uniqueId,format,extension);
                     console.log(result[0]);
                     response.status(200).send('Status: true');
                 }
