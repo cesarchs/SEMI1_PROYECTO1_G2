@@ -15,7 +15,7 @@ appUsuario.use(bodyParser.json());
 
 /** importar s3 peticiones */
 
-import { subirfotoPerfil} from './uploader.controller.js'
+import { subirfotoS3 } from './uploader.controller.js'
 
 
 import sha256 from 'js-sha256' // libreria para emcriptar 
@@ -86,7 +86,7 @@ appUsuario.post('/register',(request, response)=>{
                     console.log(err);
                     response.status(502).send('Status: false');
                 }else{
-                    subirfotoPerfil(request,uniqueId,format,extension);
+                    subirfotoS3(request,uniqueId,format,extension);
                     console.log(result[0]);
                     response.status(200).send('Status: true');
                 }

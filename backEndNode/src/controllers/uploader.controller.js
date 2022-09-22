@@ -25,7 +25,7 @@ export function holaU (req, res ) {
 	res.json({messaje: 'Hola desde controlador de upload 2'})
 }
 
-export function subirfotoPerfil (request,uniqueId, format,extension){
+export function subirfotoS3 (request,uniqueId, format,extension){
     var foto = request.body.base64; 
     var nombrei = "fotos/" + uniqueId +extension ; 
 

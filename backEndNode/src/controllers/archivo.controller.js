@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid'; // identificador unico
 
 /** importar s3 peticiones */
 
-import {subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
+import {subirfotoS3, subirArchivoPdf, subirArchivoTxt} from './uploader.controller.js'
 
 /** VARIABLES DE NOMBRE DE TIPO DE ARCHIVOS CARGADOS A S3 */
 
@@ -133,7 +133,7 @@ appArchivo.post('/uploadFile',(request, response)=>{
                 console.log(err);
                 response.status(502).send('Status: false');
             }else if (tipoArchivo =="img"){
-                //subirimagen
+                subirfotoS3(request, uniqueId, format, extension)
                 console.log(result[0]);
                 response.status(200).send('Status: true');
                 
