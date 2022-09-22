@@ -69,7 +69,17 @@ def login():
                 return ("Usuario o contraseña incorrecta")
         conexion.close()
         #return userLogin
-        return ("Usuario logeado")
+        respuesta = {
+            "idUser" : userLogin[0][0],
+            "user" : userLogin[0][1],
+            "email" : userLogin[0][3],
+            "pw" : userLogin[0][4],
+            "fullname" : userLogin[0][2],
+            "photo" : userLogin[0][5]
+        }
+        return jsonify(respuesta)
+        #return str(respuesta)
+        #print(jsonify(respuesta))
     except:
         return ("Error en login de usuario")
 
