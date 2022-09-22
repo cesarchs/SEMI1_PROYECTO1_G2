@@ -116,7 +116,7 @@ appArchivo.post('/uploadFile',(request, response)=>{
         
         }else{
             console.log("mandar error de tipo de archivo");
-            throw err
+            return response.status(502).json('tipo de archivo no aceptado');
         }
 
         var miQuery2 = "INSERT INTO ARCHIVO(file_name, tipoArchivo, propietario, private, URL, FechaCreacion, FechaModificacion) " +
@@ -131,20 +131,20 @@ appArchivo.post('/uploadFile',(request, response)=>{
         conn.query(miQuery2, function(err, result){
             if(err){
                 console.log(err);
-                response.status(502).send('Status: false');
+                response.status(502).json('Status: false');
             }else if (tipoArchivo =="img"){
                 subirfotoS3(request, uniqueId, format, extension)
                 console.log(result[0]);
-                response.status(200).send('Status: true');
+                response.status(200).json('Status: true');
                 
             }else if (tipoArchivo =="pdf"){
                 subirArchivoPdf(request, uniqueId, format, extension)
                 console.log(result[0]);
-                response.status(200).send('Status: true');
+                response.status(200).json('Status: true');
             }else {
                 subirArchivoTxt(request, uniqueId, format, extension)
                 console.log(result[0]);
-                response.status(200).send('Status: true');
+                response.status(200).json('Status: true');
             }
         });
     });   

@@ -89,7 +89,10 @@ export class UploadFile extends React.Component{
                     alert("Archivo subido con éxito!");
                 })
             }else{
-                alert("Error al subir el archivo!")
+                //alert("Error al subir el archivo!")
+                result.json().then((res)=>{ 
+                    alert(res);
+                })
             }
         });
     } 
