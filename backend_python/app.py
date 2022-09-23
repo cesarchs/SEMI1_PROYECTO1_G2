@@ -50,7 +50,7 @@ def allFriends():
     return amigos
 
 #LOGIN USER
-@app.route('/login', methods=['POST'])
+@app.route('/apiUsuarioN/login', methods=['POST'])
 def login():
     try:
         userLogin = None
@@ -79,13 +79,12 @@ def login():
         }
         return jsonify(respuesta)
         #return str(respuesta)
-        #print(jsonify(respuesta))
     except:
         return ("Error en login de usuario")
 
 
 #REGISTER
-@app.route('/register', methods=['POST'])
+@app.route('/apiUsuarioN/register', methods=['POST'])
 def register():
     try:
         userRegister = None
@@ -112,13 +111,14 @@ def register():
             cursor.execute(query)
         conexion.commit()
         conexion.close()
-        return ("(200), Usuario registrado\n" + str(userRegister))
+        #return ("(200), Usuario registrado\n" + str(userRegister))
+        return ("Status: true")
     except:
-        return ("(502), Error en registro de usuario")
+        return ("Status: false")
 
 
 #ADD FRIEND
-@app.route('/addFriend', methods=['POST'])
+@app.route('/apiUsuarioN/addFriend', methods=['POST'])
 def addFriend():
     try:
         addFriend = None
@@ -133,10 +133,9 @@ def addFriend():
             cursor.execute(query)
         conexion.commit()
         conexion.close()
-        return ("(200), Amigo registrado\n" + str(addFriend))
+        return ("Status: true")
     except:
-        print("(502), Error en registro de Amgio")
-        return None
+        return ("Status: false")
 
 
 @app.route('/userFiles/<idUser>', methods=['GET'])
