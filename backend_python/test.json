@@ -1,16 +1,17 @@
 {
-    "user":"userTest2",
+    "user":"userTest1",
 	"fullname":"Daniel Monterroso",
     "email": "cdanym2@gmail.com",
-    "pwd":"1234"
+    "pwd":"1234",
+    "foto": "photo.jpg"
 }
 
 {
-    "userOrEmail":"userTest2",
-    "pwd":"1234"
+    "user":"leonardo",
+    "pwd":"123456789"
 }
 
 {
-    "id_user": 00,
-    "id_friend": 00,
+    "id_user": 1,
+    "id_friend": 2,
 }
