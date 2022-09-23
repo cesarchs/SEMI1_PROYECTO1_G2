@@ -12,7 +12,6 @@ body{
   margin-left: auto;
 }
 
-
 .fh{
   height: 100%;
 }
@@ -48,4 +47,39 @@ body{
   .card img {
     width: 40%;
   }
+}
+.form-switch.form-switch-md {
+  margin-bottom: 1rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-md .form-check-input {
+  height: 1.5rem;
+  width: calc(2rem + 0.75rem);
+  border-radius: 3rem;
+}
+
+
+.custom-file-button input[type=file] {
+  margin-left: -2px !important;
+}
+
+.custom-file-button input[type=file]::-webkit-file-upload-button {
+  display: none;
+}
+
+.custom-file-button input[type=file]::file-selector-button {
+  display: none;
+}
+
+.custom-file-button:hover label {
+  background-color: #dde0e3;
+  cursor: pointer;
+}
+
+.paragraph{
+  word-wrap: break-word;
+}
+
+.overflow{
+  overflow-y: scroll;
 }

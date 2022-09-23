@@ -1,37 +1,116 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { File } from "../components/file";
+import { FilesHeader } from "../components/files-header";
 
-export function MyFiles(){
+export class MyFiles extends React.Component{
+    constructor(props){
+        super(props)
+        
+        this.state ={
+            files: [],
+            tab: 1
+        }
+    }
 
-    const [toggleState, setToggleState] = useState(1);
+    componentWillMount() {
+        let url = "http://localhost:5000/apiUsuarioN/userFiles/"+ localStorage.getItem("idUsuario");
+        let status = 0;
+        fetch(url, {
+            method:'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then((result)=>{
+            status = result.status;
+            if(status === 200){
+                result.json().then((res)=>{
+                    this.setState({ files: res })
+                })
+            }else{
+                alert("Error en la petición!")
+            }
+        });
+    }
 
-    const toggleTab = (index) => {
-        setToggleState(index);
-    };
+    selectedTab(tabIndex){
+        this.setState({tab:tabIndex})
+    }    
 
-    return(
-        <div className="container">
-            {/* TITLE */}
-            <div className="nav navbar navbar-inverse navbar-expand-lg p-0">
-                <h4 className="navbar-brand">Mis Archivos</h4>
-                <div className="navbar-nav">
-                    <span role="button" className={toggleState === 1 ? "bg-danger text-light p-2 ms-2" : "p-2 ms-2"} 
-                            onClick={() => toggleTab(1)}>Todos</span>
-                    <span role="button" className={toggleState === 2 ? "bg-danger text-light p-2 ms-2" : "p-2 ms-2"} 
-                            onClick={() => toggleTab(2)}>Privados</span>
-                    <span role="button" className={toggleState === 3 ? "bg-danger text-light p-2 ms-2" : "p-2 ms-2"} 
-                            onClick={() => toggleTab(3)}>Públicos</span>
+    render(){
+        const { files } = this.state;
+
+        return(
+            <div className="container">
+                {/* TITLE */}
+                <div className="nav navbar navbar-inverse navbar-expand-lg p-0">
+                    <h4 className="navbar-brand">Mis Archivos</h4>
+                    <div className="navbar-nav">
+                        <span role="button" className={this.state.tab === 1 ? "btn btn-sm bg-danger text-light" : "btn btn-sm"} 
+                                onClick={() => this.selectedTab(1)}>Todos</span>
+                        <span role="button" className={this.state.tab === 2 ? "btn btn-sm bg-danger text-light ms-2" : "btn btn-sm ms-2"} 
+                                onClick={() => this.selectedTab(2)}>Privados</span>
+                        <span role="button" className={this.state.tab === 3 ? "btn btn-sm bg-danger text-light ms-2" : "btn btn-sm ms-2"} 
+                                onClick={() => this.selectedTab(3)}>Públicos</span>
+                    </div>
                 </div>
-            </div>
-            <hr></hr>
-            {/* CONTENT */}
-            
-            <div className="">
-                <File fileName={"Arhivo1.pdf"} fileType={"pdf"} owner={"Yo"} date={"09/06/2022"} visibility={"Público"}/>
-                <File fileName={"Arhivo2.txt"} fileType={"txt"} owner={"Yo"} date={"09/06/2022"} visibility={"Privado"}/>
-                <File fileName={"Arhivo3.png"} fileType={"img"} owner={"Yo"} date={"09/06/2022"} visibility={"Privado"}/>
-            </div>
+                <hr className="mb-3 mt-2"></hr>
+                
+                {/* CONTENT */}
+                <FilesHeader />
+
+            {/* TODOS LOS ARCHIVOS */}
+            {
+                files && this.state.tab === 1 && files.map( (obj, i) => {
+                    return( <File
+                                key={i} 
+                                id={obj.idArchivo} 
+                                url={obj.URL}
+                                fileName={obj.file_name}
+                                fileType={obj.tipoArchivo}
+                                owner={"Yo"}
+                                date={obj.FechaCreada}
+                                isPrivate={obj.private}
+                                editable={true}/>
+                        )
+                })
+            }
+                
+            {/* ARCHIVOS PRIVADOS */}
+            {
+                files && this.state.tab === 2 && files.filter((obj) => { return obj.private}).map( (obj, i) => {
+                    return( <File 
+                                key={i} 
+                                id={obj.idArchivo} 
+                                url={obj.URL} 
+                                fileName={obj.file_name}
+                                fileType={obj.tipoArchivo}
+                                owner={"Yo :p"}
+                                date={obj.FechaCreada}
+                                isPrivate={obj.private}
+                                editable={true}/>
+                        )
+                })
+            }
+
+            {/* ARCHIVOS PPUBLICOS */}
+            {
+                files && this.state.tab === 3 && files.filter((obj) => { return ! obj.private}).map( (obj, i) => {
+                    return( <File 
+                                key={i} 
+                                id={obj.idArchivo} 
+                                url={obj.URL} 
+                                fileName={obj.file_name}
+                                fileType={obj.tipoArchivo}
+                                owner={"Yo :p"}
+                                date={obj.FechaCreada}
+                                isPrivate={obj.private}
+                                editable={true}/>
+                        )
+                })
+            } 
+
         </div>
-    );
+        );
+    }
 }
