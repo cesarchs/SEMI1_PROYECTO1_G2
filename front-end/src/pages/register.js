@@ -53,7 +53,7 @@ export class Register extends React.Component{
 
     submit(event){
         event.preventDefault(); 
-        let url = "http://localhost:5000/apiUsuarioN/register";
+        let url = "http://balancerg2-1443778845.us-east-1.elb.amazonaws.com/apiUsuarioN/register";
         if(this.state.pwd !== this.state.pwd2){
             alert("Contraseña no coiciden!")
         }else{

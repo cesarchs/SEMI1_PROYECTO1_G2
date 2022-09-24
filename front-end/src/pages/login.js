@@ -25,7 +25,7 @@ export class Login extends React.Component{
     submit(event){
 
         event.preventDefault(); 
-        let url = "http://localhost:5000/apiUsuarioN/login";
+        let url = "http://balancerg2-1443778845.us-east-1.elb.amazonaws.com/apiUsuarioN/login";
         let data = this.state;
         let status = 0;
         fetch(url, {

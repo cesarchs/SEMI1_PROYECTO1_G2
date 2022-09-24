@@ -56,7 +56,7 @@ export class UploadFile extends React.Component{
 
     submit(event){
         event.preventDefault(); 
-        let url = "http://localhost:5000/apiUsuarioN/uploadFile";
+        let url = "http://balancerg2-1443778845.us-east-1.elb.amazonaws.com/apiUsuarioN/uploadFile";
         // text/plain
         // application/pdf
         // image/png
