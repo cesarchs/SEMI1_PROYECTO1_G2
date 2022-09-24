@@ -89,10 +89,7 @@ appArchivo.post('/uploadFile',(request, response)=>{
     console.log(format);
     console.log(extension);
    
-    if (pwd == null || pws ==undefined){
-        console.log("no contrasena");
-        return response.status(502).json('no pwd');
-    }
+    
     var urlS3;
     
     var miQuery = "SELECT * FROM USUARIO " +
