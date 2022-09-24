@@ -20,25 +20,17 @@ app.use(bodyParser.urlencoded({ limit: '25mb', extended: true }))
 //////////////////////////////////////////////////////////////////////////////////
 // /////////////////////////// FUNCIONES PARA S3  ////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
-/**
- *  // todas las funciones podian ser peticiones si se haria desde aca la peticion
- *app.get('/holaUpload', function (req, res ) {
-	res.json({messaje: 'Hola desde controlador de upload'})
-});
-*/
+
 export function holaU (req, res ) {
 	res.json({messaje: 'Hola desde controlador de upload 2'})
 }
 
-export function subirfoto (request,uniqueId){
+export function subirfotoS3 (request,uniqueId, format,extension){
+    var foto = request.body.base64; 
+    var nombrei = "fotos/" + uniqueId +extension ; 
 
-    var foto = request.body.base64;
-    //carpeta y nombre que quieran darle a la imagen
-  
-    var nombrei = "fotos/" + uniqueId + ".jpg"; // fotos -> se llama la carpeta 
-    //se convierte la base64 a bytes
-    let buff = new Buffer.from(foto, 'base64');
-  
+    let buff = new Buffer.from(foto.split(";base64,")[1], 'base64');
+    console.log(buff)
 
 
     AWS.config.update({
@@ -53,24 +45,47 @@ export function subirfoto (request,uniqueId){
       Bucket: "archivos-2grupo-p1",
       Key: nombrei,
       Body: buff,
-      ContentType: "image"
+      ContentType: format
     };
     const putResult = s3.putObject(params).promise();
    // response.json({ mensaje: putResult })
 
 }
 
-export function subirArchivoPdf (request,uniqueId){
-
+export function subirArchivoPdf (request, uniqueId, format, extension){
 
     var file = request.body.base64;
-    //carpeta y nombre que quieran darle a la imagen
-  
-    var nombrei = "pdf/" + uniqueId + ".pdf"; // fotos -> se llama la carpeta 
-    //se convierte la base64 a bytes
-    let buff = new Buffer.from(file, 'base64');
+    var nombrei = "pdf/" + uniqueId +extension ; 
+
+    let buff = new Buffer.from(file.split(";base64,")[1], 'base64');
+    console.log(buff)
   
 
+    AWS.config.update({
+        region: aws_keys.s3.region,  
+        accessKeyId: aws_keys.s3.accessKeyId,
+        secretAccessKey: aws_keys.s3.secretAccessKey
+    });
+
+    var s3 = new AWS.S3(); 
+    const params = {
+      Bucket: "archivos-2grupo-p1",
+      Key: nombrei,
+      Body: buff,
+      ContentType: format
+    };
+    const putResult = s3.putObject(params).promise();
+
+}
+
+export function subirArchivoTxt (request,uniqueId, format,extension){
+    var foto = request.body.base64; 
+    var nombrei = "txt/" + uniqueId +extension ; 
+
+    //se convierte la base64 a bytes
+    let buff = new Buffer.from(foto.split(";base64,")[1], 'base64');
+    console.log(buff)
+  
 
     AWS.config.update({
         region: aws_keys.s3.region, // se coloca la region del bucket 
@@ -84,48 +99,11 @@ export function subirArchivoPdf (request,uniqueId){
       Bucket: "archivos-2grupo-p1",
       Key: nombrei,
       Body: buff,
-      ContentType: "application/pdf"
+      ContentType: format
     };
     const putResult = s3.putObject(params).promise();
-    //response.json({ mensaje: putResult })
 
 }
-
-export function subirArchivoTxt (request, uniqueId){
-
-    var file = request.body.base64;
-    //carpeta y nombre que quieran darle a la imagen
-  
-    var nombrei = "txt/" + uniqueId + ".txt"; // fotos -> se llama la carpeta 
-    //se convierte la base64 a bytes
-    let buff = new Buffer.from(file, 'base64');
-  
-
-
-    AWS.config.update({
-        region: aws_keys.s3.region, // se coloca la region del bucket 
-        accessKeyId: aws_keys.s3.accessKeyId,
-        secretAccessKey: aws_keys.s3.secretAccessKey
-    });
-
-    var s3 = new AWS.S3(); // se crea una variable que pueda tener acceso a las caracteristicas de S3
-    // metodo 1
-    const params = {
-      Bucket: "archivos-2grupo-p1",
-      Key: nombrei,
-      Body: buff,
-      ContentType: "file"
-    };
-    const putResult = s3.putObject(params).promise();
-    //response.json({ mensaje: putResult })
-
-}
-
-
-
-
-
-
 
 
 export function getPhoto (req, res) {
@@ -162,9 +140,6 @@ export function getPhoto (req, res) {
 }
 
 
-
-
-
 export function VerS3 (req, res) {
 
     AWS.config.update({
@@ -196,8 +171,70 @@ export function VerS3 (req, res) {
 
 
 
+export function eliminarfotoS3 (url){
 
+    let nombrei;
+    
+    if (url.split("fotos/")[1] != undefined){
+        nombrei = "fotos/"+ url.split("fotos/")[1];
+    } else if (url.split("txt/")[1] != undefined){
+        nombrei = "txt/"+ url.split("txt/")[1];
+    } else if (url.split("pdf/")[1] != undefined){
+        nombrei = "pdf/"+ url.split("pdf/")[1];
+    }
+    console.log(nombrei);
+
+
+
+    AWS.config.update({
+        region: aws_keys.s3.region, // se coloca la region del bucket 
+        accessKeyId: aws_keys.s3.accessKeyId,
+        secretAccessKey: aws_keys.s3.secretAccessKey
+    });
+
+    var s3 = new AWS.S3(); // se crea una variable que pueda tener acceso a las caracteristicas de S3
+    // metodo 1
+    const params = {
+      Bucket: "archivos-2grupo-p1",
+      Key: nombrei
+    };
+    const putResult = s3.deleteObject(params).promise();
+   //response.json({ mensaje: putResult })
+
+}
 
 
 
 export default app
+
+/**export function subirArchivoPdf (request,uniqueId){
+
+    var file = request.body.base64;
+    
+    //carpeta y nombre que quieran darle a la imagen
+  
+    var nombrei = "pdf/" + uniqueId + ".pdf"; // fotos -> se llama la carpeta 
+    //se convierte la base64 a bytes
+    let buff = new Buffer.from(file, 'base64');
+  
+
+
+    AWS.config.update({
+        region: aws_keys.s3.region, // se coloca la region del bucket 
+        accessKeyId: aws_keys.s3.accessKeyId,
+        secretAccessKey: aws_keys.s3.secretAccessKey
+    });
+
+    var s3 = new AWS.S3(); // se crea una variable que pueda tener acceso a las caracteristicas de S3
+    // metodo 1
+    const params = {
+      Bucket: "archivos-2grupo-p1",
+      Key: nombrei,
+      Body: buff,
+      ContentType: "application/pdf"
+    };
+    const putResult = s3.putObject(params).promise();
+    //response.json({ mensaje: putResult })
+
+}
+ */

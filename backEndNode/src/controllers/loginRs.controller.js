@@ -18,8 +18,8 @@ appLogin.use(function(req, res, next) {
    next();
   });
 
-appLogin.get('/holaLogin', function (req, res ) {
-	res.json({messaje: 'Hola desde el controlador del log in'})
+  appLogin.get('/', function (req, res ) {
+	res.status(200).json([]);
 });
 
 
@@ -49,14 +49,5 @@ appLogin.post('/login',(request, response)=>{
     }); 
 })
 
-/* // PETICION ANTERIOR PARA ENCRIPTAR DIRECTO EN LA PETICION 
-
-    var miQuery = "SELECT * FROM USUARIO " +
-    'WHERE ( user = ' + "\'"+user+"\' "+ 
-    'AND pwd = aes_encrypt( ' + '\'1\',' + "\'"+pwd+"\' ) ) " +
-    'OR ( email = ' + "\'"+user+"\' "+ 
-    'AND pwd = aes_encrypt( ' + '\'1\',' + "\'"+pwd+"\' ) )" 
-    ;
-*/
 
 export default appLogin
