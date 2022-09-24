@@ -27,7 +27,7 @@ export class FriendFiles extends React.Component{
     }
 
     componentWillMount() {
-        let url = "http://localhost:5000/apiUsuarioN/friendFiles/"+ localStorage.getItem("idUsuario");
+        let url = "http://balancerg2-1443778845.us-east-1.elb.amazonaws.com/apiUsuarioN/friendFiles/"+ localStorage.getItem("idUsuario");
         let status = 0;
         fetch(url, {
             method:'GET',

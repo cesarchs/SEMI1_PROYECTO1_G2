@@ -9,7 +9,7 @@ export function User({id, url, userName, publicFiles, fullname, email, aggregabl
         //     "id_user":"12",
         //     "id_friend":"12"
         // }
-        let url = "http://localhost:5000/apiUsuarioN/addFriend";
+        let url = "http://balancerg2-1443778845.us-east-1.elb.amazonaws.com/apiUsuarioN/addFriend";
         let data = {
             id_user: localStorage.getItem("idUsuario"),
             id_friend: id

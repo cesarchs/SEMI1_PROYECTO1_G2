@@ -14,7 +14,7 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
     let fixedName = fileName.length > 23 ? fileName.substring(0,26)+"..." : fileName
     //EDITAR ARCHIVO
     const handleClick = () => {
-        let url = "http://localhost:5000/apiUsuarioN/editFile";
+        let url = "http://balancerg2-1443778845.us-east-1.elb.amazonaws.com/apiUsuarioN/editFile";
         let data = {
             idUsuario: localStorage.getItem("idUsuario"),
             id_file: id,
@@ -43,7 +43,7 @@ export function File({id, url, fileName, fileType, owner, date, isPrivate, edita
 
     //ELIMINAR ARCHIVO
     const handleClickEliminate = () =>{
-        let url = "http://localhost:5000/apiUsuarioN/deleteFile";
+        let url = "http://balancerg2-1443778845.us-east-1.elb.amazonaws.com/apiUsuarioN/deleteFile";
         let data = {
             idUsuario: localStorage.getItem("idUsuario"),
             id_file: id,
