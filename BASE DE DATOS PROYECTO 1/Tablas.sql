@@ -4,18 +4,12 @@ USE BD_PROYECTO1;
 CREATE TABLE USUARIO(
 	idUsuario INT PRIMARY KEY auto_increment,
     user VARCHAR(20) unique,
-    fullname VARCHAR(100) unique,
+    fullname VARCHAR(100) not null,
     email VARCHAR(100) unique,
-    pwd VARCHAR(100) default NULL,
+    pwd VARCHAR(100) not null,
     photo VARCHAR(100) not null
 ) engine = innodb default charset = latin1;
--- 
--- TIPO DE ARCHIVO (PNG, JPG, JPGE, PDF) 
-CREATE TABLE TIPOARCHIVO(
-	idTipoArchivo INT PRIMARY KEY auto_increment,
-    Tipo VARCHAR(5),
-    Extension VARCHAR(5)
-);
+
 -- ----------------------------------------------
 -- AMIGO
 CREATE TABLE AMIGO(
@@ -32,6 +26,7 @@ CREATE TABLE AMIGO(
 CREATE TABLE ARCHIVO(
 	idArchivo INT PRIMARY KEY AUTO_INCREMENT,
     file_name VARCHAR(50) not null,
+    tipoArchivo VARCHAR(3) not null,
 	propietario INT NOT NULL,
     private tinyint ,
     URL VARCHAR(100),

@@ -45,14 +45,33 @@ def register():
     fullname = request.json['fullname']
     email = request.json['email']
     pwd = request.json['pwd']
+    pwdHash = hashlib.sha256(pwd.encode('utf-8')).hexdigest()
     base64 = request.json['base64']
     temp = base64.split(',')
     try:
-        url = upload_file(temp[0], temp[1])
-                
-
+        query = "SELECT * FROM USUARIO WHERE USUARIO.user = '"+user+"' or USUARIO.email = '"+email+"'"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        res = generateArray(cur, data)
+        cur.close()
+        if len(res) == 0:
+            url = upload_file(temp[0], temp[1])
+            query = """
+                insert into USUARIO (user,fullname, email,pwd,photo) 
+                VALUES ( '{user}', 
+                         '{fullname}',
+                         '{email}',
+                         '{hash}', 
+                         '{url_photo}');
+            """.format(user=user, fullname=fullname, email=email, hash=pwdHash, url_photo=url)
+            cur = mysql.connection.cursor()
+            cur.execute(query)
+            mysql.connection.commit();
+            cur.close()
+            return Response("{'Status': 'true'}", status=200, content_type='application/json')
+        else:
+            return Response("{'Status': 'false'}", status=500, content_type='application/json')
     except Exception as e:
         print("Register: ", e)
         return Response("{'Status': 'false'}", status=500, content_type='application/json')
-
-    return "register"

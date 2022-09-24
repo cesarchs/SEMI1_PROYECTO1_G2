@@ -1,5 +1,5 @@
 from flask import Blueprint, Response, request
-from db import mysql, generateArray
+from db import mysql, generateArray, upload_file
 import hashlib
 import json
 
@@ -81,11 +81,75 @@ def edit_file():
 # -------------------------------------------------------------------
 @file_endpoints.route("/deleteFile", methods=["POST"])
 def delete_file():
-    return "hola"
+    # idUsuario: localStorage.getItem("idUsuario"),
+    # id_file: id,
+    # pwd: inputPwd
+    id_user = request.json['idUsuario']
+    id_file = request.json['id_file']
+    pwd = request.json['pwd']
+    pwdHash = hashlib.sha256(pwd.encode('utf-8')).hexdigest()
+
+    try:
+        query = "SELECT * FROM USUARIO WHERE (idUsuario = {id} AND pwd = '{hash}' )".format(id=id_user, hash=pwdHash)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        res = generateArray(cur, data)
+        cur.close()
+        if len(res) == 1:
+            query = "DELETE FROM ARCHIVO WHERE idArchivo ={idfile}".format(idfile=id_file)
+            cur = mysql.connection.cursor()
+            cur.execute(query)
+            mysql.connection.commit();
+            cur.close()
+            return Response('{"status": true}', status=200, content_type='application/json')
+        else: 
+            return Response('{"status": false}', status=500, content_type='application/json')
+    except Exception as e:
+        print("UploadFile: ", e)
+        return Response('{"status": false}', status=500, content_type='application/json')
 
 # -------------------------------------------------------------------
 # /apiUsuarioN/uploadFile
 # -------------------------------------------------------------------
 @file_endpoints.route("/uploadFile", methods=["POST"])
-def upload_file():    
-    return "Todo bien otra vez desde file"
+def upload_file_endpoint():
+    id_user = request.json['idUsuario']
+    file_type = request.json['tipoArchivo']
+    file_name = request.json['file_name']
+    base64 = request.json['base64']
+    private = request.json['private']
+    pwd = request.json['pwd']
+    pwdHash = hashlib.sha256(pwd.encode('utf-8')).hexdigest()
+
+    try:
+        query = "SELECT * FROM USUARIO WHERE (idUsuario = {id} AND pwd = '{hash}' )".format(id=id_user, hash=pwdHash)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        res = generateArray(cur, data)
+        cur.close()
+        if len(res) == 1:
+            temp = base64.split(',')
+            url = upload_file(temp[0], temp[1])
+            query = """
+                INSERT INTO ARCHIVO(file_name, tipoArchivo, propietario, private, URL, FechaCreacion, FechaModificacion)
+                VALUES( '{filename}', 
+                        '{tipoArchivo}',
+                        {idUsuario},
+                        {privado},
+                        '{urlS3}',
+                        CURDATE(),
+                        CURDATE()
+                );
+            """.format(filename=file_name, tipoArchivo=file_type, idUsuario=id_user, privado=private, urlS3=url)
+            cur = mysql.connection.cursor()
+            cur.execute(query)
+            mysql.connection.commit();
+            cur.close()
+            return Response('{"status": true}', status=200, content_type='application/json')
+        else: 
+            return Response('{"status": false}', status=500, content_type='application/json')
+    except Exception as e:
+        print("UploadFile: ", e)
+        return Response('{"status": false}', status=500, content_type='application/json')
