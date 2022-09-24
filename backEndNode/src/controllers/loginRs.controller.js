@@ -18,8 +18,8 @@ appLogin.use(function(req, res, next) {
    next();
   });
 
-appLogin.get('/holaLogin', function (req, res ) {
-	res.json({messaje: 'Hola desde el controlador del log in'})
+appLogin.get('/', function (req, res ) {
+	res.status(200).json([]);
 });
 
 
