@@ -1,4 +1,3 @@
-from xmlrpc.client import ResponseError
 from flask import Blueprint, Response, request
 from db import mysql, generateArray
 import hashlib
@@ -88,5 +87,5 @@ def delete_file():
 # /apiUsuarioN/uploadFile
 # -------------------------------------------------------------------
 @file_endpoints.route("/uploadFile", methods=["POST"])
-def upload_file():
+def upload_file():    
     return "Todo bien otra vez desde file"

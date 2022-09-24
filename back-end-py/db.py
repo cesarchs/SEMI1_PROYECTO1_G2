@@ -1,11 +1,15 @@
 from app import app
 from flask_mysqldb import MySQL 
+import base64
+import boto3
+import os
+import uuid
 
-app.config['MYSQL_USER'] = 'admin'
-app.config['MYSQL_PASSWORD'] = 'administrador12345'
-app.config['MYSQL_HOST'] = 'bdproyecto1.cgofcdyhh2sv.us-east-1.rds.amazonaws.com'
-app.config['MYSQL_DB'] = 'BD_PROYECTO1'
-app.config['MYSQL_PORT'] = 2022
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
+app.config['MYSQL_PORT'] = os.getenv('MYSQL_PORT')
 
 mysql = MySQL(app)
 
@@ -18,16 +22,30 @@ def generateArray(cursor, data):
         array.append(temp)
     return array
 
-# CONFIGURACION DEL BUCKET
+def upload_file(head:str, file_base64:str):
+    file_name = str(uuid.uuid1())
+    print(file_name, head)
+    ext =""
+    folder = ""
+    if "pdf" in head:
+        ext = '.pdf'
+        folder = 'pdf/'
+    elif "text" in head:
+        ext = '.txt'
+        folder = 'txt/'
+    else:
+        # data:image/png;base64
+        ext = "." + head.split(';')[0].split('/')[1]
+        folder = 'fotos/'
+    bucket_name = os.getenv("S3_NAME")
+    file_path = folder + file_name + ext
+    s3 = boto3.resource('s3',
+        aws_access_key_id = os.getenv("S3_ACCESS_KEY"),
+        aws_secret_access_key = os.getenv("S3_SECRET_KEY")
+    )
 
-import boto3, botocore
-
-# S3_REGION = "us-east-1"
-# S3_ACCKEY = "AKIA3OAU7UXZKTE6CQGU"
-# S3_SACCKEY = "YDgabyM8JUlaAWNtMhMPjenCa/g0Fcrt6m8nxhGV"
-
-
-app.config['S3_BUCKET'] = "S3_BUCKET_NAME"
-app.config['S3_KEY'] = "AKIA3OAU7UXZKTE6CQGU"
-app.config['S3_SECRET'] = "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"
-app.config['S3_LOCATION'] = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
+    obj = s3.Object(bucket_name, file_path)
+    obj.put(Body = base64.b64decode(file_base64))
+    object_url = "https://%s.s3.amazonaws.com/%s" % (bucket_name, file_path)
+    print(object_url)
+    return object_url

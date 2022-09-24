@@ -1,8 +1,8 @@
+from fileinput import filename
 from flask import Blueprint, Response, request
-from db import mysql, generateArray
+from db import mysql, generateArray, upload_file
 import hashlib
 import json
-
 # RUTAS EN ESTE ARCHIVO
 # http://localhost:5000/apiUsuarioN/login 					    POST
 # http://localhost:5000/apiUsuarioN/register				    POST
@@ -41,4 +41,18 @@ def login():
 # -------------------------------------------------------------------
 @user_endpoints.route("/register", methods=["POST"])
 def register():
+    user = request.json['user']
+    fullname = request.json['fullname']
+    email = request.json['email']
+    pwd = request.json['pwd']
+    base64 = request.json['base64']
+    temp = base64.split(',')
+    try:
+        url = upload_file(temp[0], temp[1])
+                
+
+    except Exception as e:
+        print("Register: ", e)
+        return Response("{'Status': 'false'}", status=500, content_type='application/json')
+
     return "register"

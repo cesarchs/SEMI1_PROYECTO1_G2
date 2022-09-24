@@ -4,6 +4,10 @@ from routes.friend import friend_endpoints
 from app import app
 from flask_cors import CORS
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # MIDDELWARES
 CORS(app)
 
