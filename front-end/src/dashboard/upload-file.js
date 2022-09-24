@@ -85,14 +85,10 @@ export class UploadFile extends React.Component{
         }).then((result)=>{
             status = result.status;
             if(status === 200){
-                result.json().then((res)=>{ 
-                    alert("Archivo subido con éxito!");
-                })
+                alert("Archivo subido con éxito!");
+                window.location.reload(false);
             }else{
-                //alert("Error al subir el archivo!")
-                result.json().then((res)=>{ 
-                    alert(res);
-                })
+                alert("Error al subir el archivo!")
             }
         });
     } 
