@@ -29,11 +29,9 @@ export function Home(){
             <div className="container mt-5">
                 <footer className="footer text-center text-light">
                     <div className="inner">
-                        <small>
                         <p>
                             <a href="https://google.com" className="text-light">Repositorio Github</a> | Grupo #2
-                        </p>
-                        </small>                        
+                        </p>                    
                     </div>
                 </footer>
             </div>
