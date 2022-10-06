@@ -19,6 +19,7 @@ appLogin.use(function(req, res, next) {
   });
 
   appLogin.get('/', function (req, res ) {
+    console.log ("confirmacion de peticion");
 	res.status(200).json([]);
 });
 
